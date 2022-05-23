@@ -25,4 +25,5 @@ class Start(Screen):
 
     def start_server(self):
         self.switch_screen("stop")
-        ServerManager.start_server()
+        stop_screen = self.master.screens["stop"]
+        ServerManager.start_server(stop_screen)

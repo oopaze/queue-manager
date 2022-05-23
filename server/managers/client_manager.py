@@ -14,7 +14,6 @@ class RawMessageContract(TypedDict):
 class ClientContract(TypedDict):
     name: str
     address: str
-    type: Literal["client", "watcher"]
     messages: List[RawMessageContract]
 
 
@@ -28,12 +27,6 @@ class ClientManager:
         client["messages"].append({"content": message, "moment": get_moment()})
         return message
 
-    def register_as_watcher(self, address):
-        client = self.get_or_register_client.get(address)
-        client["type"] = "watcher"
-
-        return "Cliente registrado com sucesso"
-
     def decode_message(self, message):
         data: MessageContract = loads(message.decode())
 
@@ -44,11 +37,8 @@ class ClientManager:
         kwargs_was_passed = not isinstance(data.get("kwargs", None), dict)
         if kwargs_was_passed:
             data["kwargs"] = {}
-        
-        return data
 
-    def get_all_watchers(self) -> List[ClientContract]:
-        return list(filter(lambda item: item["type"] == "watcher", self.clients))
+        return data
 
     def get_or_register_client(self, address: str) -> ClientContract:
         if address in self.clients.keys():
@@ -56,9 +46,8 @@ class ClientManager:
 
         self.amount_of_client += 1
         self.clients[address] = {
-            "name": f"Guiche {self.amount_of_client}",
+            "name": f"{self.amount_of_client}",
             "address": address,
-            "type": "client", 
             "messages": [],
         }
 

@@ -2,6 +2,7 @@ from threading import Thread
 
 from server.implementations.server import Server
 from server.exceptions import ServerError
+from shared.widgets.screen import Screen
 
 
 class ServerManager:
@@ -9,9 +10,9 @@ class ServerManager:
     server_instance = None
 
     @classmethod
-    def start_server(cls):
+    def start_server(cls, screen: Screen):
         if cls.server_instance is None:
-            cls.server_instance = Server()
+            cls.server_instance = Server(screen=screen)
 
         cls.server_thread = Thread(target=cls.server_instance.run)
         cls.server_thread.start()

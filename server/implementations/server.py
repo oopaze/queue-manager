@@ -1,36 +1,43 @@
-import queue
-from server.managers.client_manager import ClientManager
+from server.exceptions import EmptyQueueError
+from server.managers.client_manager import ClientContract, ClientManager
 from server.managers.queue_manager import QueueManager
 from shared.socket import Socket
 
 
 class Server(Socket):
-    def __init__(self, *args, **kwargs):
+    last_client: ClientContract = None
+    item_template = "Senha: {queue_item} | Guiche: {guiche}"
+
+    def __init__(self, screen, *args, **kwargs):
+        self.screen = screen
         super().__init__(*args, **kwargs)
         self.client_manager = ClientManager()
-        self.queue_manager = QueueManager()
+        self.queue_manager = QueueManager(self)
 
         self.actions = {
-            "next": self.propagate,
+            "next": self.next_item,
             "add": self.queue_manager.register_queue_item,
-            "register_as_watcher": self.client_manager.register_as_watcher,
-            "reset": self.queue_manager.reset_queue
+            "reset": self.queue_manager.reset_queue,
+            "get": self.queue_manager.get_queue,
         }
 
     def error_action(self, *args, **kwargs):
-        return "Ação inesperada"
+        return "'Ação inesperada'"
 
-    def propagate(self):
-        queue_item = self.queue_manager.get_next_queue_item()
-        send_message = self.format_message(queue_item)
-
-        clients = self.client_manager.get_all_watchers()
-
-        for client in clients:
-            self.sendto(send_message, client["address"])
+    def next_item(self):
+        try:
+            queue_item = self.queue_manager.get_next_queue_item()
+            self.screen.update_label_item(
+                self.item_template.format(
+                    queue_item=queue_item, guiche=self.last_client["name"]
+                )
+            )
+            return queue_item
+        except EmptyQueueError as err:
+            return f"'{err}'"
 
     def format_message(self, message: str):
-        return f"{'message': {message}}".encode()
+        return f"{{'message': {message}}}".encode("utf-8")
 
     def run(self):
         self.start()
@@ -38,10 +45,12 @@ class Server(Socket):
         while self.running:
             message, address = self.recvfrom(2048)
             data = self.client_manager.submit(message, address)
+            self.last_client = self.client_manager.get_or_register_client(
+                address[0]
+            )
 
             action = self.actions.get(data["action"], self.error_action)
             send_message = action(*data["args"], **data["kwargs"])
 
-
-            send_message = self.format_message("Ok")
+            send_message = self.format_message(send_message)
             self.sendto(send_message, address)
