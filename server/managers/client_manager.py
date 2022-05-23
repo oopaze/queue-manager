@@ -1,11 +1,9 @@
 from json import loads
-from typing import List, TypedDict
+from typing import List, Literal, TypedDict
 
 from server.utils.get_moment import get_moment
-
-
-class MessageContract(TypedDict):
-    actions: str  # Literal["actions_name"]
+from shared.contracts import MessageContract
+from shared.socket import Socket
 
 
 class RawMessageContract(TypedDict):
@@ -15,6 +13,7 @@ class RawMessageContract(TypedDict):
 
 class ClientContract(TypedDict):
     name: str
+    type: Literal["client", "watcher"]
     messages: List[RawMessageContract]
 
 
@@ -22,14 +21,11 @@ class ClientManager:
     clients: ClientContract = {}
     amount_of_client = 0
 
-    def submit(self, encoded_message, address):
+    def submit(self, encoded_message, address) -> MessageContract:
         client = self.get_or_register_client(address[0])
         message = self.decode_message(encoded_message)
         client["messages"].append({"content": message, "moment": get_moment()})
-
-        send_message = "Ok"
-
-        return send_message.encode()
+        return message
 
     def decode_message(self, message):
         return loads(message.decode())
@@ -41,6 +37,7 @@ class ClientManager:
         self.amount_of_client += 1
         self.clients[address] = {
             "name": f"Guiche {self.amount_of_client}",
+            "type": "client", 
             "messages": [],
         }
 
