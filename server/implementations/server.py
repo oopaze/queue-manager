@@ -1,20 +1,24 @@
 from socket import AF_INET, SOCK_DGRAM, socket, gethostname, gethostbyname
 
+from server.managers.client_manager import ClientManager
+
 
 server_instance = None
 server_thread = None
 
 
 class Server(socket):
-    ON = 'on'
-    OFF = 'off'
+    ON = "on"
+    OFF = "off"
 
     host = gethostbyname(gethostname())
     port = 5000
     _running = OFF
 
-    def __init__(self, *args, family: int = AF_INET, type: int = SOCK_DGRAM, **kwargs):
-        kwargs.update({"family": family, "type": type})
+    client_manager = ClientManager()
+
+    def __init__(self, *args, **kwargs):
+        kwargs.update({"family": AF_INET, "type": SOCK_DGRAM})
         super().__init__(*args, **kwargs)
         self.bind()
 
@@ -30,13 +34,11 @@ class Server(socket):
 
     def stop(self):
         self._running = self.OFF
-        self.close()
 
     def run(self):
         self.start()
 
         while self.running:
-            body, address = self.recvfrom(2048)
-            body = body.decode()
-
-
+            message, address = self.recvfrom(2048)
+            send_message = self.client_manager.submit(message, address)
+            self.sendto(send_message, address)

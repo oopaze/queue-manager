@@ -24,5 +24,5 @@ class Start(Screen):
         self.button.place(x=50, y=100)
 
     def start_server(self):
-        self.switch_screen('stop')
+        self.switch_screen("stop")
         ServerManager.start_server()

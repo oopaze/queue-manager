@@ -1,6 +1,7 @@
 from shared.widgets.button import Button
+from shared.widgets.label import Label
 from shared.widgets.screen import Screen
-from server.defaults import APP_SIZE, LIGHTRED, RED
+from server.defaults import APP_SIZE, BLUE, LIGHTBLUE, LIGHTRED, RED
 
 from server.managers.server_manager import ServerManager
 from server.implementations.server import server_instance
@@ -23,8 +24,9 @@ class Stop(Screen):
             bg=LIGHTRED,
             command=self.stop_server,
         )
-        self.button.place(x=50, y=180)
+
+        self.button.place(x=50, y=130)
 
     def stop_server(self):
-        self.switch_screen('start')
+        self.switch_screen("start")
         ServerManager.stop_server()
