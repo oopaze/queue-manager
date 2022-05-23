@@ -1,7 +1,7 @@
 from tkinter import Button
 from shared.app import App
 from .defaults import APP_SIZE
-from .screen.home import Home
+from .screens.home import Home
 
 
 def run_server():
