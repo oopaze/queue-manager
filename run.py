@@ -1,15 +1,7 @@
 from argparse import ArgumentParser
 
-from server import get_server_app
-
-
-def run_server():
-    app = get_server_app()
-    app.run()
-
-
-def run_client():
-    ...
+from server import run_server
+from client import run_client
 
 
 if __name__ == "__main__":

@@ -4,7 +4,7 @@ from .defaults import APP_SIZE
 from .screen.home import Home
 
 
-def get_server_app():
+def run_server():
     screens = [Home]
 
     app = App()
@@ -12,4 +12,4 @@ def get_server_app():
     app.set_base_config(APP_SIZE)
     app.set_screens(screens)
 
-    return app
+    app.run()
