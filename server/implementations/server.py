@@ -16,9 +16,9 @@ class Server(Socket):
 
         self.actions = {
             "next": self.next_item,
-            "add": self.queue_manager.register_queue_item,
-            "reset": self.queue_manager.reset_queue,
-            "get": self.queue_manager.get_queue,
+            "add": self.queue_manager.add,
+            "reset": self.queue_manager.reset,
+            "get": self.queue_manager.get,
         }
 
     def error_action(self, *args, **kwargs):
