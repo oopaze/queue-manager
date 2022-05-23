@@ -10,9 +10,10 @@ class Socket(socket):
     port = 5000
     _running = OFF
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, listen_amount: int = 10, *args, **kwargs):
         kwargs.update({"family": AF_INET, "type": SOCK_DGRAM})
         super().__init__(*args, **kwargs)
+        self.listen(listen_amount)
         self.bind()
 
     @property
