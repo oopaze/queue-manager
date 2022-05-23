@@ -1,10 +1,11 @@
 from shared.widgets.button import Button
 from shared.widgets.screen import Screen
-from server.defaults import APP_SIZE, LIGHTGREEN, LIGHTRED, RED, GREEN
+from server.defaults import APP_SIZE, LIGHTGREEN, GREEN
+from server.managers.server_manager import ServerManager
 
 
-class Home(Screen):
-    _screen_name = "home"
+class Start(Screen):
+    _screen_name = "start"
 
     def __init__(
         self, *args, width: int = APP_SIZE[0], height: int = APP_SIZE[1], **kwargs
@@ -20,17 +21,8 @@ class Home(Screen):
             bg=LIGHTGREEN,
             command=self.start_server,
         )
-        self.button.place(x=50, y=180)
+        self.button.place(x=50, y=100)
 
     def start_server(self):
-        self.button.configure(
-            text="Parar servidor", fg=RED, bg=LIGHTRED, command=self.stop_server
-        )
-
-    def stop_server(self):
-        self.button.configure(
-            text="Iniciar servidor",
-            fg=GREEN,
-            bg=LIGHTGREEN,
-            command=self.start_server,
-        )
+        self.switch_screen('stop')
+        ServerManager.start_server()
