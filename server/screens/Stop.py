@@ -4,7 +4,6 @@ from shared.widgets.screen import Screen
 from server.defaults import APP_SIZE, BLUE, LIGHTBLUE, LIGHTRED, RED
 
 from server.managers.server_manager import ServerManager
-from server.implementations.server import server_instance
 
 
 class Stop(Screen):
