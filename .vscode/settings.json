@@ -1,0 +1,10 @@
+{
+  "editor.tabSize": 4,
+  "editor.formatOnSave": true,
+  "python.formatting.provider": "black",
+  "python.formatting.blackArgs": [
+    "--line-length",
+    "84"
+  ],
+  "files.insertFinalNewline": true
+}
