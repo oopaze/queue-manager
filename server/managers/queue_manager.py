@@ -36,4 +36,4 @@ class QueueManager:
         self.queue = []
         self.passed_queue = []
 
-        return "'Fila resetada com sucesso'"
+        return "Fila resetada com sucesso"

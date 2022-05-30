@@ -1,7 +1,7 @@
 import socket
 
 mensagem_envio = """{
-    "action": "add",
+    "action": "get",
     "args": []
 }"""
 
