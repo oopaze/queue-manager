@@ -12,7 +12,7 @@ class Server(Socket):
         self.screen = screen
         super().__init__(*args, **kwargs)
         self.client_manager = ClientManager()
-        self.queue_manager = QueueManager(self)
+        self.queue_manager = QueueManager()
 
         self.actions = {
             "next": self.next_item,

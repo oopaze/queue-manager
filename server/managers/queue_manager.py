@@ -1,13 +1,10 @@
-import queue
-
 from server.exceptions import EmptyQueueError
-from server.implementations.server import Server
 
 
 class QueueManager:
     PREFERENCIAL_PREFIX = "C"
 
-    def __init__(self, server: Server):
+    def __init__(self):
         self.queue = []
         self.passed_queue = []
         self.queue_counter = 1000
