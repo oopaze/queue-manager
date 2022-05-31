@@ -47,8 +47,8 @@ class Server(Socket):
 
         while self.running:
             message, address = self.recvfrom(2048)
-            print(f"New message from: {address[0]}:{address[1]}")
             data = self.client_manager.submit(message, address)
+            print(f"New connection from {address[0]}:{address[1]}")
             self.last_client = self.client_manager.get_or_register_client(
                 address[0]
             )
@@ -60,3 +60,11 @@ class Server(Socket):
             self.sendto(send_message, address)
 
         self.close()
+
+    def close(self, *args, **kwargs):
+        message = self.format_message("close!")
+
+        for _, client in self.client_manager.clients.items():
+            self.sendto(message, client["address"])
+
+        return super().close(*args, **kwargs)

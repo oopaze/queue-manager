@@ -20,15 +20,13 @@ class Home(Screen):
         {"text": "Resetar Fila", "name": "reset"},
     ]
 
-    def __init__(
-        self, *args, width: int = APP_SIZE[0], height: int = APP_SIZE[1], **kwargs
-    ):
+    def __init__(self, *args, **kwargs):
         self.app: App = args[0]
         self.event_manager: EventManager = self.app.client.event_manager
 
-        self.commands = {"next": self.next, "reset": self.reset}
+        self.commands = {"next": self.next, "reset": self.reset, "show": self.show}
 
-        kwargs.update({"width": width, "height": height})
+        kwargs.update({"width": APP_SIZE[0], "height": APP_SIZE[1]})
         super().__init__(*args, **kwargs)
 
     def get_command(self, name: str) -> Callable:
@@ -45,6 +43,7 @@ class Home(Screen):
                 command=command,
             )
             button.place(x=50, y=i * 60 + 80)
+            self.buttons.append(button)
 
     def next(self):
         message = {"action": "next"}
@@ -55,3 +54,6 @@ class Home(Screen):
         message = {"action": "reset"}
         encoded_message = self.app.client.encode_message(message)
         return self.event_manager.add({"message": encoded_message})
+
+    def show(self):
+        self.switch_screen("show_password")
