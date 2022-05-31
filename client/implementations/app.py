@@ -14,11 +14,12 @@ class ClientApp(App):
     def start_client(self):
         if self.client is None:
             self.client = Client(bind=False)
+            self.client.app = self
 
-        if self.client_thread is None:
-            self.client_thread = Thread(target=self.client.run)
-
+        self.client_thread = Thread(target=self.client.run)
         self.client_thread.start()
 
     def stop_client(self):
         self.client.stop()
+        self.client.close()
+        self.client = None

@@ -1,5 +1,13 @@
 from abc import abstractclassmethod
-from socket import AF_INET, SOCK_DGRAM, socket, gethostname, gethostbyname
+from socket import (
+    AF_INET,
+    SOL_SOCKET,
+    SO_REUSEADDR,
+    SOCK_DGRAM,
+    socket,
+    gethostname,
+    gethostbyname,
+)
 
 
 class Socket(socket):
@@ -22,6 +30,7 @@ class Socket(socket):
         return self._running == self.ON
 
     def bind(self):
+        self.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
         super().bind((self.host, self.port))
 
     def start(self):

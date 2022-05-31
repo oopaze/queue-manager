@@ -18,16 +18,17 @@ class Client(Socket):
 
     def run(self):
         self.start()
+        address = (self.host, self.port)
 
         while self.running:
-            address = (self.host, self.port)
             event = self.event_manager.next()
 
             if event is not None:
                 self.sendto(event["message"], address)
-
                 received_encoded_message, _ = self.recvfrom(2048)
                 received_decoded_message = self.decode_message(
                     received_encoded_message
                 )
                 self.event_manager.execute(received_decoded_message, event)
+
+        self.close()

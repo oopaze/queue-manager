@@ -57,3 +57,5 @@ class Server(Socket):
 
             send_message = self.format_message(send_message)
             self.sendto(send_message, address)
+
+        self.close()
