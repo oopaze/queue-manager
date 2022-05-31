@@ -4,25 +4,21 @@ from shared.app import App
 
 
 class ClientApp(App):
-    client_thread = None
-    client_instance = None
+    client: Client = None
+    client_thread: Thread = None
 
-    @classmethod
-    def start_client(cls):
-        if cls.client_instance is None:
-            cls.client_instance = Client()
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.start_client()
 
-        if cls.client_thread is None:
-            cls.client_thread = Thread(cls.client_instance.run)
+    def start_client(self):
+        if self.client is None:
+            self.client = Client(bind=False)
 
-        cls.client_thread.start()
+        if self.client_thread is None:
+            self.client_thread = Thread(target=self.client.run)
 
-    @classmethod
-    def stop_client(cls):
-        if cls.client_instance.running:
-            cls.client_instance.stop()
+        self.client_thread.start()
 
-    def run(self):
-        ClientApp.start_client()
-        super().run()
-        ClientApp.stop_client()
+    def stop_client(self):
+        self.client.stop()

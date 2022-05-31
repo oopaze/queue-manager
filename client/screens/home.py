@@ -1,6 +1,9 @@
 from typing import Callable
+
 from client.contracts import HomeButtonContract
-from client.defaults import APP_SIZE, BLUE, GREEN, LIGHTBLUE, LIGHTGREEN
+from client.defaults import APP_SIZE, BLUE, LIGHTBLUE
+from client.managers.event_manager import EventManager
+from client.implementations.app import ClientApp as App
 from shared.widgets.screen import Screen
 from shared.widgets.button import Button
 
@@ -13,12 +16,18 @@ class Home(Screen):
         {"text": "Próximo", "name": "next"},
         {"text": "Ver Senhas", "name": "get"},
         {"text": "Adicionar Senha", "name": "add"},
+        {"text": "Mostrar Senha", "name": "show"},
         {"text": "Resetar Fila", "name": "reset"},
     ]
 
     def __init__(
         self, *args, width: int = APP_SIZE[0], height: int = APP_SIZE[1], **kwargs
     ):
+        self.app: App = args[0]
+        self.event_manager: EventManager = self.app.client.event_manager
+
+        self.commands = {"next": self.next, "reset": self.reset}
+
         kwargs.update({"width": width, "height": height})
         super().__init__(*args, **kwargs)
 
@@ -35,4 +44,14 @@ class Home(Screen):
                 text=button_kwargs["text"],
                 command=command,
             )
-            button.place(x=50, y=i * 60 + 100)
+            button.place(x=50, y=i * 60 + 80)
+
+    def next(self):
+        message = {"action": "next"}
+        encoded_message = self.app.client.encode_message(message)
+        return self.event_manager.add({"message": encoded_message})
+
+    def reset(self):
+        message = {"action": "reset"}
+        encoded_message = self.app.client.encode_message(message)
+        return self.event_manager.add({"message": encoded_message})

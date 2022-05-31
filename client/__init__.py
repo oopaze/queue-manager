@@ -9,4 +9,5 @@ def run_client():
 
     app.set_base_config(APP_SIZE)
     app.set_screens(screens)
+
     app.run()

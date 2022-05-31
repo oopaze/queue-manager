@@ -28,7 +28,7 @@ class Server(Socket):
 
     def next_item(self):
         try:
-            queue_item = self.queue_manager.get_next_queue_item()
+            queue_item = self.queue_manager.next()
             self.screen.update_label_item(
                 self.item_template.format(
                     queue_item=queue_item, guiche=self.last_client["name"]
@@ -40,7 +40,6 @@ class Server(Socket):
 
     def format_message(self, message: str):
         message = json.dumps({"message": message}, ensure_ascii=True, skipkeys=True)
-        print(message)
         return message.encode("utf-8")
 
     def run(self):
