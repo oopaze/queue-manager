@@ -48,7 +48,12 @@ class Home(Screen):
     def next(self):
         message = {"action": "next"}
         encoded_message = self.app.client.encode_message(message)
-        return self.event_manager.add({"message": encoded_message})
+        return self.event_manager.add(
+            {
+                "message": encoded_message,
+                "action": self.app.screens["show_password"].update_password_time,
+            },
+        )
 
     def reset(self):
         message = {"action": "reset"}
@@ -56,4 +61,5 @@ class Home(Screen):
         return self.event_manager.add({"message": encoded_message})
 
     def show(self):
+        self.next()
         self.switch_screen("show_password")

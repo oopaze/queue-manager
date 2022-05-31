@@ -8,7 +8,7 @@ from shared.socket import Socket
 
 class Server(Socket):
     last_client: ClientContract = None
-    item_template = "Senha: {queue_item} | Guiche: {guiche}"
+    item_template = "Senha: {queue_item}\nGuiche: {guiche}"
 
     def __init__(self, screen, *args, **kwargs):
         self.screen = screen
@@ -29,12 +29,11 @@ class Server(Socket):
     def next_item(self):
         try:
             queue_item = self.queue_manager.next()
-            self.screen.update_label_item(
-                self.item_template.format(
-                    queue_item=queue_item, guiche=self.last_client["name"]
-                )
+            message = self.item_template.format(
+                queue_item=queue_item, guiche=self.last_client["name"]
             )
-            return queue_item
+            self.screen.update_label_item(message)
+            return message
         except EmptyQueueError as err:
             return str(err)
 
@@ -60,11 +59,3 @@ class Server(Socket):
             self.sendto(send_message, address)
 
         self.close()
-
-    def close(self, *args, **kwargs):
-        message = self.format_message("close!")
-
-        for _, client in self.client_manager.clients.items():
-            self.sendto(message, client["address"])
-
-        return super().close(*args, **kwargs)
