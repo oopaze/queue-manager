@@ -22,13 +22,19 @@ class Client(Socket):
 
         while self.running:
             event = self.event_manager.next()
+            self.connect(address)
 
             if event is not None:
-                self.sendto(event["message"], address)
-                received_encoded_message, _ = self.recvfrom(2048)
-                received_decoded_message = self.decode_message(
-                    received_encoded_message
-                )
-                self.event_manager.execute(received_decoded_message, event)
+                self.send(event["message"])
 
+                try:
+                    received_encoded_message, _ = self.recvfrom(2048)
+                    received_decoded_message = self.decode_message(
+                        received_encoded_message
+                    )
+                    self.event_manager.execute(received_decoded_message, event)
+
+                except ConnectionRefusedError:
+                    ...
+                    
         self.close()
