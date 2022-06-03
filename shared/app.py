@@ -12,7 +12,13 @@ class App(Tk):
         self.screens: Dict[str, Screen] = {}
 
     def set_base_config(self, app_size: Tuple[int]):
-        self.geometry("{0}x{1}".format(*app_size))
+        self.geometry(
+            "{0}x{1}+{2}+{3}".format(
+                *app_size,
+                self.winfo_rootx(),
+                0,
+            )
+        )
 
     def set_screens(self, screens: List[Screen], initial_screen_name: str = "home"):
         for screen in screens:

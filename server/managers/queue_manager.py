@@ -5,9 +5,9 @@ class QueueManager:
     PREFERENCIAL_PREFIX = "C"
 
     def __init__(self):
-        self.queue = []
+        self.queue = ["1000"] * 10
         self.passed_queue = []
-        self.queue_counter = 1000
+        self.queue_counter = 1011
 
     def get(self):
         return self.queue

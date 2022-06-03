@@ -21,5 +21,6 @@ class ServerManager:
     def stop_server(cls):
         if cls.server_instance:
             cls.server_instance.stop()
+            cls.server_instance = None
         else:
             raise ServerError("Nenhum servidor rodando no momento")

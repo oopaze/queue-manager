@@ -1,21 +1,14 @@
-import socket
-
-mensagem_envio = """{
-    "action": "get",
-    "args": []
-}"""
+from client.defaults import APP_SIZE
+from client.implementations.app import ClientApp as App
+from client.screens.home import Home
+from client.screens.show_password import ShowPassword
 
 
 def run_client():
-    porta = 5000
-    host = socket.gethostbyname(socket.gethostname())
+    screens = [Home, ShowPassword]
+    app = App()
 
-    cliente = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    while True:
-        cliente.sendto(mensagem_envio.encode(), (host, porta))
-        mensagem_serv, ip_serv = cliente.recvfrom(2048)
-        if mensagem_serv:
-            print(mensagem_serv.decode())
-            break
-        else:
-            break
+    app.set_base_config(APP_SIZE)
+    app.set_screens(screens)
+
+    app.run()
