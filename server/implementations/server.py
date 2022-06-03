@@ -1,3 +1,5 @@
+import json
+
 from server.exceptions import EmptyQueueError
 from server.managers.client_manager import ClientContract, ClientManager
 from server.managers.queue_manager import QueueManager
@@ -12,7 +14,7 @@ class Server(Socket):
         self.screen = screen
         super().__init__(*args, **kwargs)
         self.client_manager = ClientManager()
-        self.queue_manager = QueueManager(self)
+        self.queue_manager = QueueManager()
 
         self.actions = {
             "next": self.next_item,
@@ -22,7 +24,7 @@ class Server(Socket):
         }
 
     def error_action(self, *args, **kwargs):
-        return "'Ação inesperada'"
+        return "Ação inesperada"
 
     def next_item(self):
         try:
@@ -34,10 +36,12 @@ class Server(Socket):
             )
             return queue_item
         except EmptyQueueError as err:
-            return f"'{err}'"
+            return str(err)
 
     def format_message(self, message: str):
-        return f"{{'message': {message}}}".encode("utf-8")
+        message = json.dumps({"message": message}, ensure_ascii=True, skipkeys=True)
+        print(message)
+        return message.encode("utf-8")
 
     def run(self):
         self.start()
