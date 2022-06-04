@@ -1,39 +1,37 @@
-from server.exceptions import EmptyQueueError
+"""
+Para cada 2 senhas normais, 1 preferencial é chamada
+
+"""
 
 
 class QueueManager:
-    PREFERENCIAL_PREFIX = "C"
+    queue_number = 1000
 
     def __init__(self):
-        self.queue = ["1000"] * 10
-        self.passed_queue = []
-        self.queue_counter = 1011
-
-    def get(self):
-        return self.queue
-
-    def add(self, is_preferencial: bool = False):
-        self.queue_counter += 1
-
-        queue_item = f"{self.queue_counter}"
-
-        if is_preferencial:
-            queue_item = self.PREFERENCIAL_PREFIX + queue_item
-
-        self.queue.append(queue_item)
-
-        return queue_item
+        self.normal_tickets = []
+        self.preferential_tickets = []
+        self.history = []
+        self.amount_tickets_called = 1
 
     def next(self):
-        if len(self.queue) == 0:
-            raise EmptyQueueError("A fila está vazia")
+        is_third_ticket = self.amount_tickets_called % 3 == 0
+        there_is_preferential = len(self.preferential_tickets) > 0
 
-        queue_item = self.queue.pop()
-        self.passed_queue.append(queue_item)
-        return queue_item
+        if is_third_ticket and there_is_preferential:
+            next_ticket = self.preferential_tickets.pop(0)
+        else:
+            next_ticket = self.normal_tickets.pop(0)
 
-    def reset(self):
-        self.queue = []
-        self.passed_queue = []
+        self.amount_tickets_called += 1
 
-        return "Fila resetada com sucesso"
+        return next_ticket
+
+    def add(self, is_preferential: bool = False):
+        ticket_number = self.queue_number = self.queue_number + 1
+
+        if is_preferential:
+            self.preferential_tickets.append(ticket_number)
+        else:
+            self.normal_tickets.append(ticket_number)
+
+        return f'Ticket "{ticket_number}" adicionado com sucesso.'
