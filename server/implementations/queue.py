@@ -5,8 +5,10 @@ from server.exceptions import EmptyQueueException
 
 
 class Queue(DefaultQueue):
+    MAX_SIZE = 1000
+
     def __init__(self, *args, prefix: str, **kwargs):
-        super().__init__(*args, **kwargs)
+        super().__init__(*args, maxsize=self.MAX_SIZE, **kwargs)
         self.prefix = prefix
         self.counter = 0
 
