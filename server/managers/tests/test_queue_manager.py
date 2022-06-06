@@ -1,3 +1,4 @@
+import pytest
 from server.exceptions import EmptyQueueException
 from server.implementations.queue import Queue
 from server.managers.queue_manager import QueueManager
@@ -57,14 +58,9 @@ def teste_pegar_o_terceiro_item_normal_quando_nao_houver_preferencial():
 
 def teste_pedir_o_proximo_item_da_lista_vazia_deve_retornar_empty_exception():
     queue_manager = QueueManager()
-    exception = None
 
-    try:
+    with pytest.raises(EmptyQueueException):
         queue_manager.next()
-    except Exception as exception_received:
-        exception = exception_received
-
-    assert type(exception) == EmptyQueueException
 
 
 def teste_quantidade_items_chamados_se_inicia_em_0():

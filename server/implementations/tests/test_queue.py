@@ -1,3 +1,4 @@
+import pytest
 from server.exceptions import EmptyQueueException
 from server.implementations.queue import Queue
 
@@ -33,14 +34,8 @@ def teste_pedir_proximo_retorna_correto():
 def teste_pedir_proximo_com_fila_vazia_explode_error():
     queue = Queue(prefix="F")
 
-    expected_exception = None
-
-    try:
+    with pytest.raises(EmptyQueueException):
         queue.next()
-    except Exception as exception:
-        expected_exception = exception
-
-    assert type(expected_exception) == EmptyQueueException
 
 
 def test_criar_uma_fila_apartir_de_um_array():
