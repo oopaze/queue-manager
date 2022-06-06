@@ -45,3 +45,9 @@ def test_criar_uma_fila_apartir_de_um_array():
 
     assert queue.qsize() == 3
     assert queue.get() == "P2"
+
+
+def test_max_size_da_fila_eh_1000():
+    queue = Queue(prefix="N")
+
+    assert queue.maxsize == 1000
