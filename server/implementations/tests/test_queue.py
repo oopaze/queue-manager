@@ -51,3 +51,8 @@ def test_max_size_da_fila_eh_1000():
     queue = Queue(prefix="N")
 
     assert queue.maxsize == 1000
+
+
+def teste_passar_um_prefixo_sem_ser_do_tipo_string_estoura_um_erro():
+    with pytest.raises(TypeError):
+        queue = Queue(prefix=1)

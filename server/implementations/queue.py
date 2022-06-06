@@ -9,6 +9,10 @@ class Queue(DefaultQueue):
 
     def __init__(self, *args, prefix: str, **kwargs):
         super().__init__(*args, maxsize=self.MAX_SIZE, **kwargs)
+
+        if not isinstance(prefix, str):
+            raise TypeError("prefix deve ser uma string")
+
         self.prefix = prefix
         self.counter = 0
 
