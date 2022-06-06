@@ -1,11 +1,14 @@
+from queue import Empty, Queue as DefaultQueue
+from typing import Any, List
+
 from server.exceptions import EmptyQueueException
 
 
-class Queue:
-    def __init__(self, prefix: str):
+class Queue(DefaultQueue):
+    def __init__(self, *args, prefix: str, **kwargs):
+        super().__init__(*args, **kwargs)
         self.prefix = prefix
         self.counter = 0
-        self.tickets = []
 
     def generate(self):
         ticket = f"{self.prefix}{self.counter}"
@@ -14,11 +17,20 @@ class Queue:
     def add(self):
         self.counter += 1
         ticket = self.generate()
-        self.tickets.append(ticket)
+        self.put(ticket)
         return ticket
 
     def next(self):
         try:
-            return self.tickets.pop(0)
-        except IndexError:
+            return self.get(block=False)
+        except Empty:
             raise EmptyQueueException()
+
+    @staticmethod
+    def from_array(array: List[Any], prefix: str = "N"):
+        queue = Queue(prefix=prefix)
+
+        for item in array:
+            queue.put(item)
+
+        return queue

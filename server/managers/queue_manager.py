@@ -17,7 +17,6 @@ class QueueManager:
     def next(self):
         self.amount_tickets_called += 1
         is_third_ticket = self.amount_tickets_called % 3 == 0
-
         if is_third_ticket:
             try:
                 next_ticket = self.preferential_queue.next()

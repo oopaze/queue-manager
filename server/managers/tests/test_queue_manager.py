@@ -1,5 +1,9 @@
 from server.exceptions import EmptyQueueException
+from server.implementations.queue import Queue
 from server.managers.queue_manager import QueueManager
+
+normal_queue_items = ["N1", "N2", "N3", "N4"]
+preferential_queue_items = ["P1"]
 
 
 def test_adicionar_uma_senha_normal_na_fila():
@@ -7,7 +11,7 @@ def test_adicionar_uma_senha_normal_na_fila():
 
     queue_manager.add()
 
-    assert len(queue_manager.normal_queue.tickets) == 1
+    assert queue_manager.normal_queue.qsize() == 1
 
 
 def test_adicionar_uma_senha_preferencial_na_fila():
@@ -15,7 +19,7 @@ def test_adicionar_uma_senha_preferencial_na_fila():
 
     queue_manager.add(is_preferential=True)
 
-    assert len(queue_manager.preferential_queue.tickets) == 1
+    assert queue_manager.preferential_queue.qsize() == 1
 
 
 def test_pegar_proximo_item_da_fila():
@@ -26,10 +30,12 @@ def test_pegar_proximo_item_da_fila():
     assert queue_manager.next() == "N1"
 
 
-def test_pegar_proximo_item_preferencial_da_fila():
+def test_pegar_o_proximo_item_preferencial_da_fila():
     queue_manager = QueueManager()
-    queue_manager.normal_queue.tickets = ["N1", "N2", "N3", "N4"]
-    queue_manager.preferential_queue.tickets = ["P1"]
+    queue_manager.normal_queue = Queue.from_array(normal_queue_items)
+    queue_manager.preferential_queue = Queue.from_array(
+        preferential_queue_items, "P"
+    )
 
     queue_manager.next()
     queue_manager.next()
@@ -40,7 +46,7 @@ def test_pegar_proximo_item_preferencial_da_fila():
 
 def teste_pegar_o_terceiro_item_normal_quando_nao_houver_preferencial():
     queue_manager = QueueManager()
-    queue_manager.normal_queue.tickets = ["N1", "N2", "N3", "N4"]
+    queue_manager.normal_queue = Queue.from_array(normal_queue_items)
 
     queue_manager.next()
     queue_manager.next()
