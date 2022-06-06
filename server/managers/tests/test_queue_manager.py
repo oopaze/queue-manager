@@ -65,3 +65,20 @@ def teste_pedir_o_proximo_item_da_lista_vazia_deve_retornar_empty_exception():
         exception = exception_received
 
     assert type(exception) == EmptyQueueException
+
+
+def teste_quantidade_items_chamados_se_inicia_em_0():
+    queue_manager = QueueManager()
+
+    assert queue_manager.amount_tickets_called == 0
+
+
+def teste_quantidade_items_chamados_incrementa_conforme_chamamos_o_proximo_item():
+    queue_manager = QueueManager()
+    queue_manager.add()
+
+    assert queue_manager.amount_tickets_called == 0
+
+    queue_manager.next()
+
+    assert queue_manager.amount_tickets_called == 1
