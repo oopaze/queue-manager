@@ -1,29 +1,41 @@
+from server.shared.runner import Runner
 from server.shared.tests.mocks.mocked_runner import MockedRunner
 
 
 def teste_se_o_runner_inicia_offline():
-    server = MockedRunner()
+    runner = MockedRunner()
 
-    assert server._running == "off"
-    assert server.running is False
+    assert runner._running == "off"
+    assert runner.running is False
 
 
 def teste_start_libera_runner_para_rodar():
-    server = MockedRunner()
-    server.start()
+    runner = MockedRunner()
+    runner.start()
 
-    assert server._running == "on"
-    assert server.running is True
+    assert runner._running == "on"
+    assert runner.running is True
 
 
 def teste_executar_start_e_depois_stop_liga_e_desliga_runner():
-    server = MockedRunner()
-    server.start()
+    runner = MockedRunner()
+    runner.start()
 
-    assert server._running == "on"
-    assert server.running is True
+    assert runner._running == "on"
+    assert runner.running is True
 
-    server.stop()
+    runner.stop()
 
-    assert server._running == "off"
-    assert server.running is False
+    assert runner._running == "off"
+    assert runner.running is False
+
+
+def teste_instanciar_runner_sem_implementar_run_explode_um_error():
+    exception_expected = None
+
+    try:
+        runner = Runner()
+    except TypeError as e:
+        exception_expected = e
+
+    assert type(exception_expected) == TypeError

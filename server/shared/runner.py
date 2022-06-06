@@ -1,7 +1,7 @@
-from abc import abstractmethod
+from abc import ABCMeta, abstractmethod
 
 
-class Runner:
+class Runner(metaclass=ABCMeta):
     ON = "on"
     OFF = "off"
 
@@ -19,5 +19,5 @@ class Runner:
         self._running = self.ON
 
     @abstractmethod
-    def run():
-        raise NotImplementedError("Método não implementado")
+    def run(self):
+        ...
