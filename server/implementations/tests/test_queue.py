@@ -1,4 +1,3 @@
-import queue
 from server.exceptions import EmptyQueueException
 from server.implementations.queue import Queue
 
