@@ -1,3 +1,4 @@
+import pytest
 from server.shared.runner import Runner
 from server.shared.tests.mocks.mocked_runner import MockedRunner
 
@@ -33,9 +34,5 @@ def teste_executar_start_e_depois_stop_liga_e_desliga_runner():
 def teste_instanciar_runner_sem_implementar_run_explode_um_error():
     exception_expected = None
 
-    try:
+    with pytest.raises(TypeError):
         runner = Runner()
-    except TypeError as e:
-        exception_expected = e
-
-    assert type(exception_expected) == TypeError
