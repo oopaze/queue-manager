@@ -15,11 +15,14 @@ class QueueManager:
         self.amount_tickets_called = 0
         self.last_ticket_called = None
 
+    def check_preferential_time(self):
+        is_third_ticket = (self.amount_tickets_called + 1) % 3 == 0
+        return is_third_ticket or self.normal_queue.empty()
+
     def next(self):
         self.amount_tickets_called += 1
 
-        is_third_ticket = self.amount_tickets_called % 3 == 0
-        if is_third_ticket or self.normal_queue.empty():
+        if self.check_preferential_time():
             try:
                 next_ticket = self.preferential_queue.next()
             except EmptyQueueException:

@@ -96,3 +96,28 @@ def teste_gerar_uma_senha_preferencial_e_chama_la_logo_em_seguida():
     preferential_item = queue_manager.next()
 
     assert preferential_item == "P1"
+
+
+def teste_check_preferential_time_retorna_true_quando_for_o_terceiro_ticket():
+    queue_manager = QueueManager()
+    queue_manager.normal_queue = Queue.from_array(["N1", "N2", "N3"])
+    queue_manager.preferential_queue = Queue.from_array(["P1"], prefix="P")
+
+    queue_manager.next()
+    queue_manager.next()
+
+    assert queue_manager.check_preferential_time() is True
+
+
+def teste_check_preferential_time_retorna_false_quando_for_primeiro_ticket_normal():
+    queue_manager = QueueManager()
+    queue_manager.normal_queue = Queue.from_array(["N1"])
+
+    assert queue_manager.check_preferential_time() is False
+
+
+def teste_check_preferential_time_retorna_true_quando_nao_tiver_tickets_normais():
+    queue_manager = QueueManager()
+    queue_manager.preferential_queue = Queue.from_array(["P1"], prefix="P")
+
+    assert queue_manager.check_preferential_time() is True
