@@ -21,6 +21,7 @@ def teste_message_manager_inicia_instaciado():
 
 
 def teste_passar_uma_acao_invalida_vai_executar_invalid_action():
+    server = Server()
     client.set_message('{"action": "no"}')
 
     connection = TSTAConnection(server=server, client=client)
@@ -43,8 +44,22 @@ def teste_passar_create_ticket_action_deve_gerar_um_ticket():
     assert client.send_message == expected_send_message
 
 
-def teste_passar_create_ticket_action_deve_gerar_um_ticket_preferencial():
+def teste_passar_create_ticket_action_com_args_deve_gerar_um_ticket_preferencial():
+    server = Server()
     client.set_message('{"action": "create_ticket", "args": [true]}')
+
+    connection = TSTAConnection(server=server, client=client)
+    connection.routine()
+
+    expected_send_message = dumps({"message": "P1"}).encode(encoding="utf8")
+    assert client.send_message == expected_send_message
+
+
+def teste_passar_create_ticket_action_com_kwargs_deve_gerar_um_ticket_preferencial():
+    server = Server()
+    client.set_message(
+        '{"action": "create_ticket", "kwargs": {"is_preferential": true} }'
+    )
 
     connection = TSTAConnection(server=server, client=client)
     connection.routine()
