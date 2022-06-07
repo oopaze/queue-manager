@@ -78,3 +78,12 @@ def teste_quantidade_items_chamados_incrementa_conforme_chamamos_o_proximo_item(
     queue_manager.next()
 
     assert queue_manager.amount_tickets_called == 1
+
+
+def teste_gerar_uma_senha_preferencial_e_chama_la_logo_em_seguida():
+    queue_manager = QueueManager()
+    queue_manager.add(is_preferential=True)
+
+    preferential_item = queue_manager.next()
+
+    assert preferential_item == "P1"
