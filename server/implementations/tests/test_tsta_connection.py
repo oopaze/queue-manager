@@ -108,3 +108,18 @@ def teste_pegar_o_proximo_ticket_quando_a_fila_estiver_vazia():
         encoding="utf8"
     )
     assert client.send_message == expected_send_message
+
+
+def teste_passar_uma_mensagem_nao_serializavel_vai_dar_acao_invalid():
+    client.set_message("foo")
+
+    connection = TSTAConnection(server=server, client=client)
+    conn_thread = Thread(target=connection.run)
+    conn_thread.start()
+    connection.stop()
+    conn_thread.join()
+
+    expected_send_message = dumps({"message": "Ação inválida"}).encode(
+        encoding="utf8"
+    )
+    assert client.send_message == expected_send_message

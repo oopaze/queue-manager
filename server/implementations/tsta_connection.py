@@ -1,3 +1,4 @@
+from json import JSONDecodeError
 from typing import Dict
 
 from server.managers.message_manager import MessageManager
@@ -31,13 +32,17 @@ class TSTAConnection(BaseConnection):
             if not encoded_message:
                 continue
 
-            message = self.message_manager.decode(encoded_message)
-            action_instance = self.actions.get(
-                message.get("action", ""), self.invalid_action
-            )
+            try:
+                message = self.message_manager.decode(encoded_message)
+                action_instance = self.actions.get(
+                    message.get("action", ""), self.invalid_action
+                )
+                args = message["args"]
+                kwargs = message["kwargs"]
 
-            args = message["args"]
-            kwargs = message["kwargs"]
+            except JSONDecodeError:
+                action_instance = self.invalid_action
+                args, kwargs = [], {}
 
             send_message = action_instance.run(*args, **kwargs)
 

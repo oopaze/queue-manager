@@ -17,9 +17,11 @@ class Server(socket, Runner):
 
     def bind(self) -> None:
         address = (self.HOST, self.PORT)
+        print(f"Iniciando servidor: {self.HOST}:{self.PORT}")
         return super().bind(address)
 
     def listen(self) -> None:
+        print(f"Ouvindo até {self.MAX_CLIENTS} clientes simultaneos")
         return super().listen(self.MAX_CLIENTS)
 
     def run(self):
@@ -27,9 +29,10 @@ class Server(socket, Runner):
         self.bind()
         self.listen()
 
+        print("Aplicação pronta para conexão\n")
+
         while self.running:
             client, address = self.accept()
-
-            print(f"Cliente conectado: {client}")
+            print(f"Novo cliente conectado: {address[0]}:{address[1]}")
 
         self.close()

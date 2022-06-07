@@ -1,8 +1,8 @@
 from socket import socket
 
 from server.managers.queue_manager import QueueManager
-from server.implementations.server import Server
 from server.shared.runner import Runner
+from server.implementations.server import Server
 
 
 class BaseConnection(Runner):
