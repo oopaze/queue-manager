@@ -8,4 +8,4 @@ class MockedServer(Server):
         self.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
 
     def accept(self) -> str:
-        return "Client 1", ""
+        return "Client 1", ("", "")
