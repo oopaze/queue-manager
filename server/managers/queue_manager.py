@@ -13,14 +13,15 @@ class QueueManager:
         self.normal_queue = Queue(prefix="N")
         self.preferential_queue = Queue(prefix="P")
         self.amount_tickets_called = 0
+        self.last_ticket_called = None
 
     def next(self):
         self.amount_tickets_called += 1
 
         is_third_ticket = self.amount_tickets_called % 3 == 0
-        is_normal_queue_is_empty = self.normal_queue.empty()
+        is_normal_queue_empty = self.normal_queue.empty()
 
-        if is_third_ticket or is_normal_queue_is_empty:
+        if is_third_ticket or is_normal_queue_empty:
             try:
                 next_ticket = self.preferential_queue.next()
             except EmptyQueueException:
@@ -28,6 +29,7 @@ class QueueManager:
         else:
             next_ticket = self.normal_queue.next()
 
+        self.last_ticket_called = next_ticket
         return next_ticket
 
     def add(self, is_preferential: bool = False):

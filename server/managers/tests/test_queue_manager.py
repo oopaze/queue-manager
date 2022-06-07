@@ -31,6 +31,15 @@ def test_pegar_proximo_item_da_fila():
     assert queue_manager.next() == "N1"
 
 
+def teste_queue_manager_esta_salvando_o_ultimo_ticket_chamado():
+    queue_manager = QueueManager()
+
+    queue_manager.add()
+    queue_manager.next()
+
+    assert queue_manager.last_ticket_called == "N1"
+
+
 def test_pegar_o_proximo_item_preferencial_da_fila():
     queue_manager = QueueManager()
     queue_manager.normal_queue = Queue.from_array(normal_queue_items)

@@ -30,7 +30,22 @@ class Action(metaclass=ABCMeta):
         ...
 
 
+class InvalidAction(Action):
+    def __init__(
+        self,
+        master: Server,
+        name: str = "invalid",
+        callback: Callable = None,
+    ):
+        super().__init__(name, master, callback)
+
+    def action(self):
+        return "Ação inválida"
+
+
 class CreateTicketAction(Action):
+    name = "create_ticket"
+
     def __init__(
         self,
         master: Server,
@@ -44,6 +59,8 @@ class CreateTicketAction(Action):
 
 
 class NextTicketAction(Action):
+    name = "next_ticket"
+
     def __init__(
         self,
         master: Server,
@@ -56,4 +73,4 @@ class NextTicketAction(Action):
         try:
             return self.master.queue_manager.next()
         except EmptyQueueException as e:
-            return e
+            return str(e)

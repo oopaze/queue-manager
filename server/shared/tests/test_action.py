@@ -16,6 +16,16 @@ def teste_next_item_action_funciona():
     assert next_ticket == "N1"
 
 
+def teste_next_item_action_vai_retornar_mensagem_de_erro_quando_fila_tiver_vazia():
+    server = Server()
+
+    next_ticket_action = NextTicketAction(server)
+
+    next_ticket = next_ticket_action.run()
+
+    assert next_ticket == "A lista está vazia"
+
+
 def teste_create_ticket_action_cria_um_novo_ticket_normal():
     server = Server()
     create_ticket_action = CreateTicketAction(server)
