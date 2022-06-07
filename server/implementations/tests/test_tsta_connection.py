@@ -1,5 +1,4 @@
 from json import dumps
-from threading import Thread
 
 from server.implementations.server import Server
 from server.implementations.queue import Queue
@@ -35,7 +34,6 @@ def teste_passar_uma_acao_invalida_vai_executar_invalid_action():
 
 def teste_passar_create_ticket_action_deve_gerar_um_ticket():
     server = Server()
-    client = MockedClient()
     client.set_message('{"action": "create_ticket"}')
 
     connection = TSTAConnection(server=server, client=client)
