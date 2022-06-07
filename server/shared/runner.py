@@ -18,6 +18,12 @@ class Runner(metaclass=ABCMeta):
     def start(self):
         self._running = self.ON
 
-    @abstractmethod
     def run(self):
+        self.start()
+
+        while self.running:
+            self.routine()
+
+    @abstractmethod
+    def routine(self):
         ...

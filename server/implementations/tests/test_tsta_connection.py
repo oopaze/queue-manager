@@ -25,10 +25,7 @@ def teste_passar_uma_acao_invalida_vai_executar_invalid_action():
     client.set_message('{"action": "no"}')
 
     connection = TSTAConnection(server=server, client=client)
-    conn_thread = Thread(target=connection.run)
-    conn_thread.start()
-    connection.stop()
-    conn_thread.join()
+    connection.routine()
 
     expected_send_message = dumps({"message": "Ação inválida"}).encode(
         encoding="utf8"
@@ -42,10 +39,7 @@ def teste_passar_create_ticket_action_deve_gerar_um_ticket():
     client.set_message('{"action": "create_ticket"}')
 
     connection = TSTAConnection(server=server, client=client)
-    conn_thread = Thread(target=connection.run)
-    conn_thread.start()
-    connection.stop()
-    conn_thread.join()
+    connection.routine()
 
     expected_send_message = dumps({"message": "N1"}).encode(encoding="utf8")
     assert client.send_message == expected_send_message
@@ -55,10 +49,7 @@ def teste_passar_create_ticket_action_deve_gerar_um_ticket_preferencial():
     client.set_message('{"action": "create_ticket", "args": [true]}')
 
     connection = TSTAConnection(server=server, client=client)
-    conn_thread = Thread(target=connection.run)
-    conn_thread.start()
-    connection.stop()
-    conn_thread.join()
+    connection.routine()
 
     expected_send_message = dumps({"message": "P1"}).encode(encoding="utf8")
     assert client.send_message == expected_send_message
@@ -70,10 +61,7 @@ def teste_passar_next_ticket_action_retorna_proximo_ticket():
     client.set_message('{"action": "next_ticket"}')
 
     connection = TSTAConnection(server=server, client=client)
-    conn_thread = Thread(target=connection.run)
-    conn_thread.start()
-    connection.stop()
-    conn_thread.join()
+    connection.routine()
 
     expected_send_message = dumps({"message": "N1"}).encode(encoding="utf8")
     assert client.send_message == expected_send_message
@@ -85,10 +73,7 @@ def teste_passar_next_ticket_action_retorna_proximo_ticket_preferencial():
     client.set_message('{"action": "next_ticket"}')
 
     connection = TSTAConnection(server=server, client=client)
-    conn_thread = Thread(target=connection.run)
-    conn_thread.start()
-    connection.stop()
-    conn_thread.join()
+    connection.routine()
 
     expected_send_message = dumps({"message": "P1"}).encode(encoding="utf8")
     assert client.send_message == expected_send_message
@@ -99,10 +84,7 @@ def teste_pegar_o_proximo_ticket_quando_a_fila_estiver_vazia():
     client.set_message('{"action": "next_ticket"}')
 
     connection = TSTAConnection(server=server, client=client)
-    conn_thread = Thread(target=connection.run)
-    conn_thread.start()
-    connection.stop()
-    conn_thread.join()
+    connection.routine()
 
     expected_send_message = dumps({"message": "A lista está vazia"}).encode(
         encoding="utf8"
@@ -114,10 +96,7 @@ def teste_passar_uma_mensagem_nao_serializavel_vai_dar_acao_invalid():
     client.set_message("foo")
 
     connection = TSTAConnection(server=server, client=client)
-    conn_thread = Thread(target=connection.run)
-    conn_thread.start()
-    connection.stop()
-    conn_thread.join()
+    connection.routine()
 
     expected_send_message = dumps({"message": "Ação inválida"}).encode(
         encoding="utf8"

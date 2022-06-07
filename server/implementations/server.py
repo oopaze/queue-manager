@@ -30,9 +30,12 @@ class Server(socket, Runner):
         self.listen()
 
         print("Aplicação pronta para conexão\n")
-
         while self.running:
-            client, address = self.accept()
-            print(f"Novo cliente conectado: {address[0]}:{address[1]}")
+            self.routine()
 
+        print("Encerrando servidor...")
         self.close()
+
+    def routine(self):
+        client, address = self.accept()
+        print(f"Novo cliente conectado: {address[0]}:{address[1]}")

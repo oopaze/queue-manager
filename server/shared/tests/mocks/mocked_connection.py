@@ -6,5 +6,5 @@ class MockedConnection(BaseConnection):
     def __init__(self, server=Server(), client=""):
         super().__init__(server, client)
 
-    def run(self):
+    def routine(self):
         ...

@@ -2,5 +2,5 @@ from server.shared.runner import Runner
 
 
 class MockedRunner(Runner):
-    def run(self):
+    def routine(self):
         return "app is running"

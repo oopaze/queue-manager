@@ -23,29 +23,24 @@ class TSTAConnection(BaseConnection):
 
         self.invalid_action = InvalidAction(self.server)
 
-    def run(self):
-        self.start()
+    def routine(self):
+        encoded_message = self.client.recv(2048)
 
-        while self.running:
-            encoded_message = self.client.recv(2048)
+        if not encoded_message:
+            return
 
-            if not encoded_message:
-                continue
+        try:
+            message = self.message_manager.decode(encoded_message)
+            action_instance = self.actions.get(
+                message.get("action", ""), self.invalid_action
+            )
+            args = message["args"]
+            kwargs = message["kwargs"]
 
-            try:
-                message = self.message_manager.decode(encoded_message)
-                action_instance = self.actions.get(
-                    message.get("action", ""), self.invalid_action
-                )
-                args = message["args"]
-                kwargs = message["kwargs"]
+        except JSONDecodeError:
+            action_instance = self.invalid_action
+            args, kwargs = [], {}
 
-            except JSONDecodeError:
-                action_instance = self.invalid_action
-                args, kwargs = [], {}
+        send_message = action_instance.run(*args, **kwargs)
 
-            send_message = action_instance.run(*args, **kwargs)
-
-            self.client.send(self.message_manager.encode(send_message))
-
-        self.client.close()
+        self.client.send(self.message_manager.encode(send_message))

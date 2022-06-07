@@ -22,3 +22,7 @@ class BaseConnection(Runner):
             raise TypeError("queue_manager deve ser uma instância de QueueManager")
 
         self._queue_manager = queue_manager
+
+    def run(self):
+        super().run()
+        self.client.close()
