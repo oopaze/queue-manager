@@ -89,6 +89,19 @@ def teste_quantidade_items_chamados_incrementa_conforme_chamamos_o_proximo_item(
     assert queue_manager.amount_tickets_called == 1
 
 
+def teste_amount_tickets_called_eh_incrementado_quando_next_eh_chamado_com_a_fila_vazia():
+    queue_manager = QueueManager()
+
+    assert queue_manager.amount_tickets_called == 0
+
+    try:
+        queue_manager.next()
+    except:
+        ...
+
+    assert queue_manager.amount_tickets_called == 0
+
+
 def teste_gerar_uma_senha_preferencial_e_chama_la_logo_em_seguida():
     queue_manager = QueueManager()
     queue_manager.add(is_preferential=True)
@@ -100,7 +113,7 @@ def teste_gerar_uma_senha_preferencial_e_chama_la_logo_em_seguida():
 
 def teste_check_preferential_time_retorna_true_quando_for_o_terceiro_ticket():
     queue_manager = QueueManager()
-    queue_manager.normal_queue = Queue.from_array(["N1", "N2", "N3"])
+    queue_manager.normal_queue = Queue.from_array(normal_queue_items)
     queue_manager.preferential_queue = Queue.from_array(["P1"], prefix="P")
 
     queue_manager.next()

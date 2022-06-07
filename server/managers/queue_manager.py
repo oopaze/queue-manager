@@ -20,8 +20,6 @@ class QueueManager:
         return is_third_ticket or self.normal_queue.empty()
 
     def next(self):
-        self.amount_tickets_called += 1
-
         if self.check_preferential_time():
             try:
                 next_ticket = self.preferential_queue.next()
@@ -31,6 +29,7 @@ class QueueManager:
             next_ticket = self.normal_queue.next()
 
         self.last_ticket_called = next_ticket
+        self.amount_tickets_called += 1
         return next_ticket
 
     def add(self, is_preferential: bool = False):
