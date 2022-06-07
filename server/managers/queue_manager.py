@@ -19,9 +19,7 @@ class QueueManager:
         self.amount_tickets_called += 1
 
         is_third_ticket = self.amount_tickets_called % 3 == 0
-        is_normal_queue_empty = self.normal_queue.empty()
-
-        if is_third_ticket or is_normal_queue_empty:
+        if is_third_ticket or self.normal_queue.empty():
             try:
                 next_ticket = self.preferential_queue.next()
             except EmptyQueueException:
