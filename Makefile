@@ -11,6 +11,10 @@ setup: requirements.txt
 runserver:
 	$(_python) runserver.py
 
+run_java_ts:
+	javac Main.java
+	java Main
+
 tv:
 	$(_python) devops/example_tv.py
 
@@ -19,6 +23,9 @@ ts:
 
 ta:
 	$(_python) devops/example_ta.py
+
+docker_run_server:
+	docker-compose -f docker-compose.server.yml up --build
 
 docker_run:
 	docker-compose up --build

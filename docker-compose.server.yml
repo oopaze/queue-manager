@@ -1,0 +1,12 @@
+version: "3.7"
+
+services:
+  server:
+    container_name: "server"
+    build:
+      dockerfile: ./devops/Dockerfile
+      context: .
+
+    command: ["python", "./runserver.py"]
+    ports:
+      - "50000:50000"
