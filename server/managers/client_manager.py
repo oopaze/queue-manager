@@ -59,15 +59,7 @@ class ClientManager:
         self.lock.acquire()
 
         for client in self.clients:
-            try:
-                client["connection"].stop()
-            except:
-                ...
-            try:
-                client["connection"].client.close()
-                client["thread"].join()
-            except:
-                ...
+            client["connection"].stop()
 
         self.clients = []
         self.lock.release()

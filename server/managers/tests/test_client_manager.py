@@ -69,3 +69,14 @@ def teste_get_clients_retorna_uma_lista_do_tipo_pedido(connection_type):
 
     for client in clients:
         assert isinstance(client["connection"], connection_type)
+
+
+def teste_stop_all_clients_fecha_todos_os_clientes():
+    _, _, connection, tsta_connection, thread = get_mocks()
+    client_manager = ClientManager()
+    client_manager.add_client(tsta_connection, thread)
+    client_manager.add_client(connection, thread)
+
+    client_manager.stop_all_clients()
+
+    assert len(client_manager.clients) == 0
