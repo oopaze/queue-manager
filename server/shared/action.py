@@ -90,9 +90,10 @@ class TransformIntoTVAction(Action):
     def action(self):
         from server.implementations.tv_connection import TVConnection
 
+        client = self.connection.client.dup()
         self.connection.stop()
 
-        tv_connection = TVConnection(self.master, self.connection.client)
+        tv_connection = TVConnection(self.master, client)
         connection_thread = Thread(target=tv_connection.run)
         connection_thread.start()
         self.master.client_manager.add_client(tv_connection, connection_thread)
