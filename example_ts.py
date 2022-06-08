@@ -25,8 +25,9 @@ NORMAL_TICKET_TEMPLATE = """{
     "action": "create_ticket"
 }"""
 
+print("Iniciando criação de novas senhas")
 
 while True:
     sleep(1)  # gerando uma senha por segundo
     client.send(generate_message())
-    print(loads(client.recv(2048)))
+    print("(Gerador de senha) - A nova senha é:", loads(client.recv(2048)))

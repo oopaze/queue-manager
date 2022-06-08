@@ -20,4 +20,4 @@ while True:
         message = loads(received).get("message", None)
 
         if message:
-            print(message)
+            print("(TV) - Senha atual:", message)

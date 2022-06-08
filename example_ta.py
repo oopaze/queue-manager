@@ -11,7 +11,9 @@ NEXT_TICKET_TEMPLATE = """{
     "action": "next_ticket"
 }"""
 
+print("Iniciando chamada ao próximo ticket")
+
 while True:
     sleep(2)
     client.send(NEXT_TICKET_TEMPLATE.encode())
-    print(loads(client.recv(2048)))
+    print("(Atendente) - Próximo Ticket:", loads(client.recv(2048)))
