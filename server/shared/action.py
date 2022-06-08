@@ -94,7 +94,6 @@ class TransformIntoTVAction(Action):
 
         tv_connection = TVConnection(self.master, self.connection.client)
         connection_thread = Thread(target=tv_connection.run)
-        self.master.client_manager.add_client(
-            {"connection": tv_connection, "thread": connection_thread}
-        )
-        self.master.client_manager.close_dead_clients()
+        connection_thread.start()
+        self.master.client_manager.add_client(tv_connection, connection_thread)
+        self.master.client_manager.clean_dead_clients()

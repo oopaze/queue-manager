@@ -1,8 +1,36 @@
 import pytest
 
-from server.shared.action import Action, CreateTicketAction, NextTicketAction
+from server.shared.action import (
+    Action,
+    CreateTicketAction,
+    NextTicketAction,
+    TransformIntoTVAction,
+)
 from server.implementations.server import Server
+from server.implementations.tsta_connection import TSTAConnection
+from server.implementations.tv_connection import TVConnection
+
+from server.implementations.tests.mocks.mocked_client import MockedClient
 from server.shared.tests.mocks.mocked_action import MockedAction
+from server.shared.tests.mocks.mocked_thread import FakeThread
+
+
+def teste_tranformar_conexao_em_tv_connection(mocker):
+    mocker.patch("server.shared.action.Thread", return_value=FakeThread)
+
+    server = Server()
+    client = MockedClient()
+    connection = TSTAConnection(server, client)
+
+    transform_tv_action = TransformIntoTVAction(server, connection)
+    transform_tv_action.run()
+
+    clients = server.client_manager.get_clients()
+    transformed_connection = clients[0]["connection"]
+
+    assert isinstance(transformed_connection, TVConnection)
+
+    server.client_manager.stop_all_clients()
 
 
 def teste_next_item_action_funciona():
