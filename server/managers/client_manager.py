@@ -1,54 +1,65 @@
-from json import loads
-from typing import Dict, List, Literal, TypedDict
-from server.exceptions import ClientNotFoundError
+from threading import Lock, Thread
+from typing import TypedDict, List, Union
 
-from server.utils.get_moment import get_moment
-from shared.contracts import MessageContract
-
-
-class RawMessageContract(TypedDict):
-    content: str
-    moment: str
+from server.implementations.tsta_connection import TSTAConnection
+from server.implementations.tv_connection import TVConnection
 
 
 class ClientContract(TypedDict):
-    name: str
-    address: str
-    messages: List[RawMessageContract]
+    thread: Thread
+    connection: Union[TSTAConnection, TVConnection]
 
 
 class ClientManager:
-    clients: Dict[str, ClientContract] = {}
-    amount_of_client = 0
+    def __init__(self) -> None:
+        self.clients: List[ClientContract] = []
+        self.lock = Lock()
 
-    def submit(self, encoded_message, address) -> MessageContract:
-        client = self.get_or_register_client(address[0])
-        message = self.decode_message(encoded_message)
-        client["messages"].append({"content": message, "moment": get_moment()})
-        return message
+    def get_clients(
+        self, type=(TSTAConnection, TVConnection)
+    ) -> List[ClientContract]:
+        self.lock.acquire()
+        clients = list(
+            filter(
+                lambda client: isinstance(client["connection"], type), self.clients
+            )
+        )
 
-    def decode_message(self, message):
-        data: MessageContract = loads(message.decode())
+        self.lock.release()
 
-        args_was_passed = not isinstance(data.get("args", None), list)
-        if args_was_passed:
-            data["args"] = []
+        return clients
 
-        kwargs_was_passed = not isinstance(data.get("kwargs", None), dict)
-        if kwargs_was_passed:
-            data["kwargs"] = {}
+    def add_client(self, connection, thread: Thread):
+        if not isinstance(connection, (TVConnection, TSTAConnection)):
+            raise TypeError(
+                "connection deve ser uma implementação TV ou TSTA connection"
+            )
 
-        return data
+        self.lock.acquire()
+        self.clients.append({"connection": connection, "thread": thread})
+        self.lock.release()
 
-    def get_or_register_client(self, address: str) -> ClientContract:
-        if address in self.clients.keys():
-            return self.clients[address]
+    def clean_dead_clients(self):
+        clients = []
 
-        self.amount_of_client += 1
-        self.clients[address] = {
-            "name": f"{self.amount_of_client}",
-            "address": address,
-            "messages": [],
-        }
+        self.lock.acquire()
 
-        return self.clients[address]
+        for idx, client in enumerate(self.clients):
+            client_thread = client["thread"]
+
+            if not client_thread.is_alive():
+                ...
+            else:
+                clients.append(self.clients[idx])
+
+        self.clients = clients
+        self.lock.release()
+
+    def stop_all_clients(self):
+        self.lock.acquire()
+
+        for client in self.clients:
+            client["connection"].stop()
+
+        self.clients = []
+        self.lock.release()

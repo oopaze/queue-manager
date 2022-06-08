@@ -1,16 +1,14 @@
-from shared.app import App
-
-from .defaults import APP_SIZE
-from .screens.Stop import Stop
-from .screens.Start import Start
+from socket import SO_REUSEADDR
+from ssl import SOL_SOCKET
+from server.implementations.server import Server
 
 
-def run_server():
-    screens = [Start, Stop]
+def run():
+    server = Server()
+    server.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
 
-    app = App()
-
-    app.set_base_config(APP_SIZE)
-    app.set_screens(screens, "start")
-
-    app.run()
+    try:
+        server.run()
+    except KeyboardInterrupt:
+        server.stop()
+        server.close()
