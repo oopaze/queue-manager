@@ -1,22 +1,22 @@
-test:
-	python -m pytest --verbose -s
+_python = . venv/bin/activate; python
 
-setup:
+test:
+	$(_python) -m pytest --verbose -s
+
+setup: requirements.txt
 	python3 -m pip install virtualenv
-	python3 -m virtualenv .venv
-	# python3 .venv/Scripts/activate_this.py # windows
-	. .venv/bin/activate # linux
-	python -m pip install -r requirements.txt
+	python3 -m virtualenv venv
+	$(_python) -m pip install -r requirements.txt
 
 runserver:
-	python runserver.py
+	$(_python) runserver.py
 
 tv:
-	python example_tv.py
+	$(_python) example_tv.py
 
 ts:
-	python example_ts.py
+	$(_python) example_ts.py
 
 ta:
-	python example_ta.py
+	$(_python) example_ta.py
 
