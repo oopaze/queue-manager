@@ -6,4 +6,4 @@ class FakeThread:
         ...
 
     def is_alive():
-        return False
+        return True
