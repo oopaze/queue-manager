@@ -6,16 +6,17 @@ from server.implementations.tests.mocks.mocked_client import MockedClient
 from server.implementations.tsta_connection import TSTAConnection
 from server.managers.message_manager import MessageManager
 
-server = Server()
 client = MockedClient()
 
 
 def teste_se_conseguimos_instanciar_tsta_connection():
+    server = Server()
     connection = TSTAConnection(server=server, client=client)
     assert isinstance(connection, TSTAConnection)
 
 
 def teste_message_manager_inicia_instaciado():
+    server = Server()
     connection = TSTAConnection(server=server, client=client)
     assert isinstance(connection.message_manager, MessageManager)
 
@@ -108,6 +109,7 @@ def teste_pegar_o_proximo_ticket_quando_a_fila_estiver_vazia():
 def teste_passar_uma_mensagem_nao_serializavel_vai_dar_acao_invalid():
     client.set_message("foo")
 
+    server = Server()
     connection = TSTAConnection(server=server, client=client)
     connection.routine()
 

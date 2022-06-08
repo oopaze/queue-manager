@@ -1,4 +1,5 @@
 from abc import ABCMeta, abstractmethod
+from threading import Thread
 from typing import Callable
 
 from server.implementations.server import Server
@@ -49,10 +50,9 @@ class CreateTicketAction(Action):
     def __init__(
         self,
         master: Server,
-        name: str = "create_ticket",
         callback: Callable = None,
     ):
-        super().__init__(name, master, callback)
+        super().__init__(self.name, master, callback)
 
     def action(self, is_preferential: bool = False):
         return self.master.queue_manager.add(is_preferential=is_preferential)
@@ -64,13 +64,37 @@ class NextTicketAction(Action):
     def __init__(
         self,
         master: Server,
-        name: str = "next_ticket",
         callback: Callable = None,
     ):
-        super().__init__(name, master, callback)
+        super().__init__(self.name, master, callback)
 
     def action(self):
         try:
             return self.master.queue_manager.next()
         except EmptyQueueException as e:
             return str(e)
+
+
+class TransformIntoTVAction(Action):
+    name = "transform_tv_connection"
+
+    def __init__(
+        self,
+        master: Server,
+        connection,
+        callback: Callable = None,
+    ):
+        super().__init__(self.name, master, callback)
+        self.connection = connection
+
+    def action(self):
+        from server.implementations.tv_connection import TVConnection
+
+        self.connection.stop()
+
+        tv_connection = TVConnection(self.master, self.connection.client)
+        connection_thread = Thread(target=tv_connection.run)
+        self.master.client_manager.add_client(
+            {"connection": tv_connection, "thread": connection_thread}
+        )
+        self.master.client_manager.close_dead_clients()

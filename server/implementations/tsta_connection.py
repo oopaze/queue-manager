@@ -8,6 +8,7 @@ from server.shared.action import (
     InvalidAction,
     NextTicketAction,
     Action,
+    TransformIntoTVAction,
 )
 
 
@@ -19,6 +20,7 @@ class TSTAConnection(BaseConnection):
         self.actions: Dict[str, Action] = {
             CreateTicketAction.name: CreateTicketAction(self.server),
             NextTicketAction.name: NextTicketAction(self.server),
+            TransformIntoTVAction.name: TransformIntoTVAction(self.server, self),
         }
 
         self.invalid_action = InvalidAction(self.server)

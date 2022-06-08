@@ -15,7 +15,7 @@ def setup():
 
 
 def test():
-    os.system("python3 -m pytest --verbose")
+    os.system("python3 -m pytest --verbose -s")
 
 
 if __name__ == "__main__":

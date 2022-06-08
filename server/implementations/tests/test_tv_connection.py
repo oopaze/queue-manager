@@ -6,22 +6,24 @@ from server.implementations.server import Server
 from server.implementations.tests.mocks.mocked_client import MockedClient
 from server.implementations.tv_connection import TVConnection
 
-server = Server()
 client = MockedClient()
 
 
 def teste_tv_connection_instancia():
+    server = Server()
     connection = TVConnection(server, client)
 
     assert isinstance(connection, TVConnection)
 
 
 def teste_se_tv_connection_inicia_com_a_lista_de_eventos_vazia():
+    server = Server()
     connection = TVConnection(server, client)
     assert connection.events.empty() is True
 
 
 def teste_add_um_novo_evento_funciona():
+    server = Server()
     connection = TVConnection(server, client)
     connection.add_new_event(lambda: print("olá"))
 
@@ -32,6 +34,7 @@ def teste_add_um_novo_evento_funciona():
     "event", ["evento", ["evento"], {"evento": "event"}, 1, object()]
 )
 def teste_add_um_novo_evento_do_tipo_diferente_de_funcao_estoura_excecao(event):
+    server = Server()
     connection = TVConnection(server, client)
 
     with pytest.raises(TypeError):
@@ -45,6 +48,7 @@ def teste_routine_roda_evento_adicionado():
         nonlocal foo
         foo += 1
 
+    server = Server()
     connection = TVConnection(server, client)
     connection.add_new_event(event)
     connection.routine()
@@ -53,6 +57,7 @@ def teste_routine_roda_evento_adicionado():
 
 
 def teste_routine_espera_o_timeout_passado_antes_de_estourar_excecao_empty():
+    server = Server()
     connection = TVConnection(server, client)
     timeout = 1
 

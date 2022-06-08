@@ -39,18 +39,35 @@ class ClientManager:
         self.clients.append({"connection": connection, "thread": thread})
         self.lock.release()
 
-    def close_dead_clients(self):
+    def clean_dead_clients(self):
         clients = []
 
         self.lock.acquire()
 
-        for idx, client in enumerate(clients):
+        for idx, client in enumerate(self.clients):
             client_thread = client["thread"]
 
             if not client_thread.is_alive():
-                client_thread.join()
+                ...
             else:
-                clients.append(self.clients.pop(idx))
+                clients.append(self.clients[idx])
 
         self.clients = clients
+        self.lock.release()
+
+    def stop_all_clients(self):
+        self.lock.acquire()
+
+        for client in self.clients:
+            try:
+                client["connection"].stop()
+            except:
+                ...
+            try:
+                client["connection"].client.close()
+                client["thread"].join()
+            except:
+                ...
+
+        self.clients = []
         self.lock.release()

@@ -6,4 +6,9 @@ from server.implementations.server import Server
 def run():
     server = Server()
     server.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
-    server.run()
+
+    try:
+        server.run()
+    except KeyboardInterrupt:
+        server.stop()
+        server.close()

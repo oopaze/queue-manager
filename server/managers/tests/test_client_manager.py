@@ -42,17 +42,12 @@ def teste_adicionar_novo_client_funciona():
 def teste_close_dead_clients_fecha_thread_mortas():
     client_manager = ClientManager()
     client_thread = Thread(target=lambda: ...)
+    client_thread.start()
+
     client_manager.clients.append({"connection": "", "thread": client_thread})
+    client_manager.clean_dead_clients()
 
-    client_manager.close_dead_clients()
-
-    assert client_thread.is_alive() is False
-
-    try:
-        # paliativo para não travar os testes
-        client_thread.join()
-    except:
-        ...
+    assert len(client_manager.clients) == 0
 
 
 def teste_get_clients_retorna_lista_de_clientes():
