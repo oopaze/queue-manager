@@ -3,7 +3,7 @@ from threading import Thread
 from tkinter import Tk, Button, Label
 from typing import Any, Dict
 
-from client_ta.client import Client
+from client_ts.client import Client
 
 
 class App(Tk):
