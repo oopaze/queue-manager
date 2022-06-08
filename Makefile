@@ -1,8 +1,12 @@
 test:
-	python3 make.py --test=1
+	python -m pytest --verbose -s
 
 setup:
-	python3 make.py --setup=1
+	python3 -m pip install virtualenv
+	python3 -m virtualenv .venv
+	# python3 .venv/Scripts/activate_this.py # windows
+	. .venv/bin/activate # linux
+	python -m pip install -r requirements.txt
 
 runserver:
 	python runserver.py
