@@ -17,4 +17,7 @@ while True:
     received = client.recv(2048)
 
     if received:
-        print(loads(received))
+        message = loads(received).get("message", None)
+
+        if message:
+            print(message)
