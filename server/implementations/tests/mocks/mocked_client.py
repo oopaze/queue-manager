@@ -15,6 +15,9 @@ class MockedClient:
         self.send_message = message
         self.message = b""
 
+    def dup(self):
+        return self
+
 
 class MockedClientError(MockedClient):
     def recv(self, *args, **kwargs):
