@@ -1,5 +1,6 @@
 from json import JSONDecodeError
 from typing import Dict
+from server.implementations.tv_connection import TVConnection
 
 from server.managers.message_manager import MessageManager
 from server.shared.connection import BaseConnection
@@ -19,14 +20,25 @@ class TSTAConnection(BaseConnection):
         self.message_manager = MessageManager()
         self.actions: Dict[str, Action] = {
             CreateTicketAction.name: CreateTicketAction(self.server),
-            NextTicketAction.name: NextTicketAction(self.server),
+            NextTicketAction.name: NextTicketAction(self.server, self.propagate),
             TransformIntoTVAction.name: TransformIntoTVAction(self.server, self),
         }
 
         self.invalid_action = InvalidAction(self.server)
 
+    def propagate(self, ticket):
+        tv_clients = self.server.client_manager.get_clients(type=TVConnection)
+
+        for client in tv_clients:
+            client["connection"].add_new_message(ticket)
+
     def routine(self):
-        encoded_message = self.client.recv(2048)
+        try:
+            encoded_message = self.client.recv(2048)
+        except ConnectionResetError:
+            self.stop()
+            self.client.close()
+            return
 
         if not encoded_message:
             return

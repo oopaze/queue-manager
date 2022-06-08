@@ -1,9 +1,4 @@
-"""
-Para cada 2 senhas normais, 1 preferencial é chamada
-
-"""
-
-
+from threading import Lock
 from server.exceptions import EmptyQueueException
 from server.implementations.queue import Queue
 
@@ -14,6 +9,7 @@ class QueueManager:
         self.preferential_queue = Queue(prefix="P")
         self.amount_tickets_called = 0
         self.last_ticket_called = None
+        self.lock = Lock()
 
     def check_preferential_time(self):
         is_third_ticket = (self.amount_tickets_called + 1) % 3 == 0
@@ -28,7 +24,7 @@ class QueueManager:
         else:
             next_ticket = self.normal_queue.next()
 
-        self.last_ticket_called = next_ticket
+        self.set_last_ticket(next_ticket)
         self.amount_tickets_called += 1
         return next_ticket
 
@@ -39,3 +35,15 @@ class QueueManager:
             ticket = self.normal_queue.add()
 
         return ticket
+
+    def set_last_ticket(self, ticket):
+        self.lock.acquire()
+        self.last_ticket_called = ticket
+        self.lock.release()
+
+    def get_last_ticket(self):
+        self.lock.acquire()
+        last_ticket = self.last_ticket_called
+        self.lock.release()
+
+        return last_ticket

@@ -19,41 +19,25 @@ def teste_tv_connection_instancia():
 def teste_se_tv_connection_inicia_com_a_lista_de_eventos_vazia():
     server = Server()
     connection = TVConnection(server, client)
-    assert connection.events.empty() is True
+    assert connection.messages.empty() is True
 
 
-def teste_add_um_novo_evento_funciona():
+def teste_adicionar_uma_nova_mensagem():
     server = Server()
     connection = TVConnection(server, client)
-    connection.add_new_event(lambda: print("olá"))
+    connection.add_new_message("message")
 
-    assert connection.events.qsize() == 1
+    assert connection.messages.qsize() == 1
 
 
-@pytest.mark.parametrize(
-    "event", ["evento", ["evento"], {"evento": "event"}, 1, object()]
-)
-def teste_add_um_novo_evento_do_tipo_diferente_de_funcao_estoura_excecao(event):
+def teste_routine_vai_enviar_mensagem():
     server = Server()
     connection = TVConnection(server, client)
+    connection.add_new_message("message")
 
-    with pytest.raises(TypeError):
-        connection.add_new_event(event=event)
-
-
-def teste_routine_roda_evento_adicionado():
-    foo = 0
-
-    def event():
-        nonlocal foo
-        foo += 1
-
-    server = Server()
-    connection = TVConnection(server, client)
-    connection.add_new_event(event)
     connection.routine()
 
-    assert foo == 1
+    assert client.send_message == b'{"message": "message"}'
 
 
 def teste_routine_espera_o_timeout_passado_antes_de_estourar_excecao_empty():

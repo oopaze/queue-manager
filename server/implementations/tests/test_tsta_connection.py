@@ -2,7 +2,10 @@ from json import dumps
 
 from server.implementations.server import Server
 from server.implementations.queue import Queue
-from server.implementations.tests.mocks.mocked_client import MockedClient
+from server.implementations.tests.mocks.mocked_client import (
+    MockedClient,
+    MockedClientError,
+)
 from server.implementations.tsta_connection import TSTAConnection
 from server.managers.message_manager import MessageManager
 
@@ -114,6 +117,29 @@ def teste_passar_uma_mensagem_nao_serializavel_vai_dar_acao_invalid():
     connection.routine()
 
     expected_send_message = dumps({"message": "Ação inválida"}).encode(
+        encoding="utf8"
+    )
+    assert client.send_message == expected_send_message
+
+
+def teste_connection_para_se_client_desconectar():
+    client = MockedClientError()
+
+    server = Server()
+    connection = TSTAConnection(server=server, client=client)
+    connection.routine()
+
+    assert connection.running is False
+
+
+def teste_propagate_envia_mensagem_para_tvs():
+    client.set_message('{"action": "next_ticket"}')
+
+    server = Server()
+    connection = TSTAConnection(server=server, client=client)
+    connection.routine()
+
+    expected_send_message = dumps({"message": "A lista está vazia"}).encode(
         encoding="utf8"
     )
     assert client.send_message == expected_send_message

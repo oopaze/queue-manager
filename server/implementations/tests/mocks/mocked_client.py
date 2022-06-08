@@ -14,3 +14,8 @@ class MockedClient:
     def send(self, message):
         self.send_message = message
         self.message = b""
+
+
+class MockedClientError(MockedClient):
+    def recv(self, *args, **kwargs):
+        raise ConnectionResetError()
