@@ -17,7 +17,6 @@ class TVConnection(BaseConnection):
         try:
             message = self.messages.get(timeout=timeout)
             encoded_message = self.message_manager.encode(message)
-            print(encoded_message)
             self.client.send(encoded_message)
         except Empty:
             ...
