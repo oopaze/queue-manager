@@ -12,11 +12,17 @@ runserver:
 	$(_python) runserver.py
 
 tv:
-	$(_python) example_tv.py
+	$(_python) devops/example_tv.py
 
 ts:
-	$(_python) example_ts.py
+	$(_python) devops/example_ts.py
 
 ta:
-	$(_python) example_ta.py
+	$(_python) devops/example_ta.py
+
+docker_run:
+	docker-compose up --build
+
+docker_purge:
+	bash ./docker-purge.sh
 

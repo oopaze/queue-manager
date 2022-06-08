@@ -6,7 +6,11 @@ from json import loads
 
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-client.connect((socket.gethostbyname(socket.gethostname()), 50000))
+
+try:
+    client.connect((socket.gethostbyname(socket.gethostname()), 50000))
+except:
+    client.connect(("server", 50000))
 
 
 def generate_message():
@@ -28,6 +32,7 @@ NORMAL_TICKET_TEMPLATE = """{
 print("Iniciando criação de novas senhas")
 
 while True:
-    sleep(1)  # gerando uma senha por segundo
+    sleep(2)  # gerando uma senha por segundo
     client.send(generate_message())
-    print("(Gerador de senha) - A nova senha é:", loads(client.recv(2048)))
+    nova_senha = loads(client.recv(2048)).get("message")
+    print("(Gerador de senha) - A nova senha é:", nova_senha)
