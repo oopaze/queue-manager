@@ -51,7 +51,7 @@ class TSTAConnection(BaseConnection):
             args = message["args"]
             kwargs = message["kwargs"]
 
-        except JSONDecodeError:
+        except (JSONDecodeError, UnicodeDecodeError):
             action_instance = self.invalid_action
             args, kwargs = [], {}
 
