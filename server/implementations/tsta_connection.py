@@ -55,6 +55,6 @@ class TSTAConnection(BaseConnection):
             action_instance = self.invalid_action
             args, kwargs = [], {}
 
-        send_message = action_instance.run(*args, **kwargs) + "\r\n"
+        send_message = action_instance.run(*args, **kwargs)
 
         self.client.send(self.message_manager.encode(send_message))
