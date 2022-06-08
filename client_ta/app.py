@@ -14,7 +14,7 @@ class App(Tk):
     }"""
 
     def __init__(self) -> None:
-        super().__init__("Client TA")
+        super().__init__()
         self.client_thread.start()
         self.geometry(f"300x300")
         self.resizable(0, 0)

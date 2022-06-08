@@ -1,14 +1,23 @@
 from json import loads
-from socket import socket, AF_INET, SOCK_STREAM
+from socket import (
+    gethostbyname,
+    gethostname,
+    socket,
+    AF_INET,
+    SOCK_STREAM,
+    SOL_SOCKET,
+    SO_REUSEADDR,
+)
 from typing import Callable
 
 
 class Client(socket):
-    SERVER_IP = "127.0.0.1"
+    SERVER_IP = gethostbyname(gethostname())
     SERVER_PORT = 50000
 
     def __init__(self, family=AF_INET, type=SOCK_STREAM, *args, **kwargs):
         super().__init__(family, type, *args, **kwargs)
+        self.setsockopt(SOL_SOCKET, SO_REUSEADDR, 1)
 
     def connect(self) -> None:
         return super().connect((self.SERVER_IP, self.SERVER_PORT))
