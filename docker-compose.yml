@@ -56,47 +56,47 @@ services:
     volumes:
       - /tmp/.X11-unix:/tmp/.X11-unix
 
-  ta2:
-    container_name: "TA2"
-    build:
-      dockerfile: ./devops/client.Dockerfile
-      context: .
+  # ta2:
+  #   container_name: "TA2"
+  #   build:
+  #     dockerfile: ./devops/client.Dockerfile
+  #     context: .
 
-    command: ["python3", "runclient_ta.py"]
-    depends_on:
-      - server 
-    environment:
-      - SERVER_IP=server
-      - DISPLAY=${DISPLAY}
-    volumes:
-      - /tmp/.X11-unix:/tmp/.X11-unix
+  #   command: ["python3", "runclient_ta.py"]
+  #   depends_on:
+  #     - server 
+  #   environment:
+  #     - SERVER_IP=server
+  #     - DISPLAY=${DISPLAY}
+  #   volumes:
+  #     - /tmp/.X11-unix:/tmp/.X11-unix
 
-  tv2:
-    container_name: "TV2"
-    build:
-      dockerfile: ./devops/client.Dockerfile
-      context: .
+  # tv2:
+  #   container_name: "TV2"
+  #   build:
+  #     dockerfile: ./devops/client.Dockerfile
+  #     context: .
 
-    command: ["python3", "runclient_tv.py"]
-    depends_on:
-      - server 
-    environment:
-      - SERVER_IP=server
-      - DISPLAY=${DISPLAY}
-    volumes:
-      - /tmp/.X11-unix:/tmp/.X11-unix
+  #   command: ["python3", "runclient_tv.py"]
+  #   depends_on:
+  #     - server 
+  #   environment:
+  #     - SERVER_IP=server
+  #     - DISPLAY=${DISPLAY}
+  #   volumes:
+  #     - /tmp/.X11-unix:/tmp/.X11-unix
 
-  tv3:
-    container_name: "TV3"
-    build:
-      dockerfile: ./devops/client.Dockerfile
-      context: .
+  # tv3:
+  #   container_name: "TV3"
+  #   build:
+  #     dockerfile: ./devops/client.Dockerfile
+  #     context: .
 
-    command: ["python3", "runclient_tv.py"]
-    depends_on:
-      - server 
-    environment:
-      - SERVER_IP=server
-      - DISPLAY=${DISPLAY}
-    volumes:
-      - /tmp/.X11-unix:/tmp/.X11-unix
+  #   command: ["python3", "runclient_tv.py"]
+  #   depends_on:
+  #     - server 
+  #   environment:
+  #     - SERVER_IP=server
+  #     - DISPLAY=${DISPLAY}
+  #   volumes:
+  #     - /tmp/.X11-unix:/tmp/.X11-unix
