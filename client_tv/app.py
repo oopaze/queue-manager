@@ -1,6 +1,5 @@
 from threading import Thread
-from tkinter import Tk, Button, Label
-from typing import Any, Dict
+from tkinter import Tk, Label
 
 from client_tv.client import Client
 
@@ -14,8 +13,9 @@ class App(Tk):
         super().__init__()
         self.geometry(f"300x300")
         self.resizable(0, 0)
-        self.title("Cliente TA - v1.0")
+        self.title("TV - v1.0")
         self.build_widgets()
+        self.protocol("WM_DELETE_WINDOW", lambda: self.close())
 
     def build_widgets(self):
         self.ticket = Label(self, text="Olá", font=("Arial", 96), fg="#00304d")
@@ -28,6 +28,10 @@ class App(Tk):
 
         self.ticket.place(x=0, y=30, width=300)
         self.message.place(x=0, y=200, width=300)
+
+    def close(self):
+        self.client.stop()
+        self.destroy()
 
     def update_ticket(self, ticket: str):
         self.ticket.configure(text=ticket)

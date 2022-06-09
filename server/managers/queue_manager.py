@@ -7,12 +7,13 @@ class QueueManager:
     def __init__(self):
         self.normal_queue = Queue(prefix="N")
         self.preferential_queue = Queue(prefix="P")
-        self.amount_tickets_called = 0
         self.last_ticket_called = None
-        self.lock = Lock()
 
     def check_preferential_time(self):
-        is_third_ticket = (self.amount_tickets_called + 1) % 3 == 0
+        n_ticket_amount = self.normal_queue.amount_tickets_called + 1
+        p_ticket_amount = self.preferential_queue.amount_tickets_called
+
+        is_third_ticket = (n_ticket_amount + p_ticket_amount) % 3 == 0
         return is_third_ticket or self.normal_queue.empty()
 
     def next(self):
@@ -23,9 +24,7 @@ class QueueManager:
                 next_ticket = self.normal_queue.next()
         else:
             next_ticket = self.normal_queue.next()
-
-        self.set_last_ticket(next_ticket)
-        self.amount_tickets_called += 1
+            
         return next_ticket
 
     def add(self, is_preferential: bool = False):
@@ -35,15 +34,3 @@ class QueueManager:
             ticket = self.normal_queue.add()
 
         return ticket
-
-    def set_last_ticket(self, ticket):
-        self.lock.acquire()
-        self.last_ticket_called = ticket
-        self.lock.release()
-
-    def get_last_ticket(self):
-        self.lock.acquire()
-        last_ticket = self.last_ticket_called
-        self.lock.release()
-
-        return last_ticket

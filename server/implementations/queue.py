@@ -15,6 +15,7 @@ class Queue(DefaultQueue):
 
         self.prefix = prefix
         self.counter = 0
+        self.amount_tickets_called = 0
 
     def generate(self):
         ticket = f"{self.prefix}{self.counter}"
@@ -28,7 +29,9 @@ class Queue(DefaultQueue):
 
     def next(self):
         try:
-            return self.get(block=False)
+            next_ticket = self.get(block=False)
+            self.amount_tickets_called += 1
+            return next_ticket
         except Empty:
             raise EmptyQueueException()
 

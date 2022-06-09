@@ -16,13 +16,13 @@ run_java_ts:
 	java Main
 
 tv:
-	$(_python) devops/example_tv.py
+	$(_python) runclient_tv.py
 
 ts:
-	$(_python) devops/example_ts.py
+	$(_python) runclient_ts.py
 
 ta:
-	$(_python) devops/example_ta.py
+	$(_python) runclient_ta.py
 
 docker_run_server:
 	docker-compose -f docker-compose.server.yml up --build

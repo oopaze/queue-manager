@@ -26,7 +26,7 @@ class App(Tk):
         self.client_thread.start()
         self.geometry(f"300x300")
         self.resizable(0, 0)
-        self.title("Cliente TA - v1.0")
+        self.title("TS - v1.0")
         self.build_widgets()
 
     def build_widgets(self):
