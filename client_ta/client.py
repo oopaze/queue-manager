@@ -1,4 +1,5 @@
 from json import loads
+from os import environ
 from socket import (
     gethostbyname,
     gethostname,
@@ -11,8 +12,12 @@ from socket import (
 from typing import Callable
 
 
+def get_env(var, default):
+    return environ.get(var, default)
+
+
 class Client(socket):
-    SERVER_IP = gethostbyname(gethostname())
+    SERVER_IP = get_env("SERVER_IP", gethostbyname(gethostname()))
     SERVER_PORT = 50000
 
     def __init__(self, family=AF_INET, type=SOCK_STREAM, *args, **kwargs):

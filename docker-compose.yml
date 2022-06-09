@@ -4,65 +4,99 @@ services:
   server:
     container_name: "server"
     build:
-      dockerfile: ./devops/Dockerfile
+      dockerfile: ./devops/server.Dockerfile
       context: .
 
-    command: ["python", "./runserver.py"]
+    command: ["python3", "./runserver.py"]
     ports:
       - "50001:50000"
 
   ts:
     container_name: "TS"
     build:
-      dockerfile: ./devops/Dockerfile
+      dockerfile: ./devops/client.Dockerfile
       context: .
 
-    command: ["python", "./devops/example_ts.py"]
+    command: ["python3", "runclient_ts.py"]
     depends_on:
       - server 
+    environment:
+      - SERVER_IP=server
+      - DISPLAY=${DISPLAY}
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
 
-  ta:
-    container_name: "TA"
+  ta1:
+    container_name: "TA1"
     build:
-      dockerfile: ./devops/Dockerfile
+      dockerfile: ./devops/client.Dockerfile
       context: .
 
-    command: ["python", "./devops/example_ta.py"]
+    command: ["python3", "runclient_ta.py"]
     depends_on:
       - server 
+    environment:
+      - SERVER_IP=server
+      - DISPLAY=${DISPLAY}
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
 
   tv1:
     container_name: "TV1"
     build:
-      dockerfile: ./devops/Dockerfile
+      dockerfile: ./devops/client.Dockerfile
       context: .
 
-    command: ["python", "./devops/example_tv.py"]
+    command: ["python3", "runclient_tv.py"]
     depends_on:
       - server 
     environment:
-      - id=1
+      - SERVER_IP=server
+      - DISPLAY=${DISPLAY}
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+
+  ta2:
+    container_name: "TA2"
+    build:
+      dockerfile: ./devops/client.Dockerfile
+      context: .
+
+    command: ["python3", "runclient_ta.py"]
+    depends_on:
+      - server 
+    environment:
+      - SERVER_IP=server
+      - DISPLAY=${DISPLAY}
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
 
   tv2:
     container_name: "TV2"
     build:
-      dockerfile: ./devops/Dockerfile
+      dockerfile: ./devops/client.Dockerfile
       context: .
 
-    command: ["python", "./devops/example_tv.py"]
+    command: ["python3", "runclient_tv.py"]
     depends_on:
       - server 
     environment:
-      - id=2
+      - SERVER_IP=server
+      - DISPLAY=${DISPLAY}
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
 
   tv3:
     container_name: "TV3"
     build:
-      dockerfile: ./devops/Dockerfile
+      dockerfile: ./devops/client.Dockerfile
       context: .
 
-    command: ["python", "./devops/example_tv.py"]
+    command: ["python3", "runclient_tv.py"]
     depends_on:
       - server 
     environment:
-      - id=3
+      - SERVER_IP=server
+      - DISPLAY=${DISPLAY}
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix

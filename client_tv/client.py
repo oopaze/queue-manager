@@ -1,4 +1,5 @@
 from json import loads
+from os import environ
 from socket import (
     gethostbyname,
     gethostname,
@@ -8,13 +9,17 @@ from socket import (
     SOL_SOCKET,
     SO_REUSEADDR,
 )
-from typing import Callable
+
+
+def get_env(var, default):
+    return environ.get(var, default)
 
 
 class Client(socket):
     OFF = "off"
     ON = "on"
-    SERVER_IP = gethostbyname(gethostname())
+
+    SERVER_IP = get_env("SERVER_IP", gethostbyname(gethostname()))
     SERVER_PORT = 50000
 
     TRANSFORM_TV_TEMPLATE = """{
@@ -34,7 +39,7 @@ class Client(socket):
 
     def stop(self):
         self._running = self.OFF
-    
+
     def start(self):
         self._running = self.ON
 
