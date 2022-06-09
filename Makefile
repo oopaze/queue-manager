@@ -11,10 +11,6 @@ setup: requirements.txt
 runserver:
 	$(_python) runserver.py
 
-run_java_ts:
-	javac Main.java
-	java Main
-
 tv:
 	$(_python) runclient_tv.py
 
