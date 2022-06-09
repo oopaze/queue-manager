@@ -8,6 +8,7 @@ from socket import (
     SOCK_STREAM,
     SOL_SOCKET,
     SO_REUSEADDR,
+    timeout,
 )
 
 
@@ -55,7 +56,7 @@ class Client(socket):
             try:
                 ticket = loads(self.recv(2048).decode("utf8"))
                 ticket = ticket.get("message", None)
-            except (TimeoutError, ConnectionResetError):
+            except (timeout):
                 ticket = None
 
             if ticket and ticket != "A lista está vazia":
