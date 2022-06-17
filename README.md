@@ -1,8 +1,13 @@
 # queue-manager
 
-Gerenciador de filas e senhas de atendimento
-<br>
-__Dependencias__:
+O queue é uma implementação de um software usado para o gerenciamento de filas de algum estabelecimento que distribua senhas. Ele conta com um servidor gerenciador e 3 tipos de clients:
+- __TA:__ Client responsável por chamar os próximos tickets. Geralmente roda na máquina do atendente.
+- __TS:__ Client responsável por gerar os tickets. Geralmente se encontra em uma máquina de auto atendimento.
+- __TV:__ Client responsável por chamar os tickets. Geralmente fica em telas no estabelecimento mostrando a próxima senha a ser atendida.
+
+Todos esses clientes contam com uma interface gráfica simples feita com `tkinter`, um módulo do `python`. O servidor foi totalmente desenvolvido em `python` e utiliza `sockets` para se comunicar com todos os clients. Toda a comunicação é feita por meio de um protocolo chamado TCP [saiba mais](https://www.tecmundo.com.br/o-que-e/780-o-que-e-tcp-ip-.htm).
+
+### Dependencias
 
 - [python >= 3.8](https://www.python.org/downloads/)
 
