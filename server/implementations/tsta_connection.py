@@ -3,6 +3,7 @@ from typing import Dict
 from server.implementations.tv_connection import TVConnection
 
 from server.managers.message_manager import MessageManager
+from server.shared import get_moment
 from server.shared.connection import BaseConnection
 from server.shared.action import (
     CreateTicketAction,
@@ -25,6 +26,7 @@ class TSTAConnection(BaseConnection):
         }
 
         self.invalid_action = InvalidAction(self.server)
+        self.host, self.port = self.client.getpeername()
 
     def propagate(self, ticket):
         tv_clients = self.server.client_manager.get_clients(type=TVConnection)
@@ -55,6 +57,10 @@ class TSTAConnection(BaseConnection):
             action_instance = self.invalid_action
             args, kwargs = [], {}
 
+        print(f"[CLIENTE:{self.port}] - {get_moment()} - {action_instance.name}")
         send_message = action_instance.run(*args, **kwargs)
 
         self.client.send(self.message_manager.encode(send_message))
+        print(
+            f"TSTA - [CLIENT:{self.port}] - {get_moment()} - {send_message or 'NO ANSWER'}"
+        )
