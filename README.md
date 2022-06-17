@@ -9,7 +9,7 @@ Gerenciador de filas e senhas de atendimento
 
 
 
-#### Como Rodar o Server
+### Como Rodar o Server
 
 Para rodar o servidor será necessário ter o python instalado e a porta `50000` disponível. Uma vez que este esteja instalado, na pasta do projeto rode o comando a seguir:
 ```sh
@@ -18,7 +18,7 @@ python runserver.py
 
 e logo seu server iniciará.
 
-#### Como rodar os Client's
+### Como rodar os Client's
 
 Para rodar o TSClient, também será necessário ter o python instalado. Inicialmente, roda o servidor. Uma vez que o servidor esteja `on`, abra um novo terminal e rode o comando a seguir:
 ```sh
