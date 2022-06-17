@@ -57,7 +57,9 @@ class TSTAConnection(BaseConnection):
             action_instance = self.invalid_action
             args, kwargs = [], {}
 
-        print(f"[CLIENTE:{self.port}] - {get_moment()} - {action_instance.name}")
+        print(
+            f"TSTA - [CLIENTE:{self.port}] - {get_moment()} - {action_instance.name}"
+        )
         send_message = action_instance.run(*args, **kwargs)
 
         self.client.send(self.message_manager.encode(send_message))
