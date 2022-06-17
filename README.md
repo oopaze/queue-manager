@@ -2,6 +2,13 @@
 
 Gerenciador de filas e senhas de atendimento
 
+<p float="left">
+  <img src="./client_start_state.png" width="50%" /> 
+  <img src="./client_running_state.png" width="45%" />
+</p>
+
+
+
 #### Como Rodar o Server
 
 Para rodar o servidor será necessário ter o python instalado e a porta `50000` disponível. Uma vez que este esteja instalado, na pasta do projeto rode o comando a seguir:
@@ -37,3 +44,4 @@ python runclient_tv.py
 ```
 
 Logo um janela abrirá com um `Client` do estilo `TV`.
+
