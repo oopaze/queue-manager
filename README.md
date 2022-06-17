@@ -1,7 +1,7 @@
 # queue-manager
 
 Gerenciador de filas e senhas de atendimento
-
+<br>
 __Dependencias__:
 
 - [python >= 3.8](https://www.python.org/downloads/)
