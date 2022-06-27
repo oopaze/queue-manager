@@ -23,7 +23,7 @@ e logo seu server iniciará.
 
 ### Como rodar os Client's
 
-Para rodar o TSClient, também será necessário ter o `python3.7+`  instalado. Inicialmente, roda o servidor. Uma vez que o servidor esteja `on`, abra um novo terminal e rode o comando a seguir:
+Para rodar algum Client, também será necessário ter o `python3.7+`  instalado. Inicialmente, roda o servidor. Uma vez que o servidor esteja `on`, abra um novo terminal e rode o comando a seguir:
 
 ```sh
 # para rodar um client do tipo TS
@@ -36,7 +36,7 @@ python runclient_ta.py
 python runclient_tv.py
 ```
 
-Logo um janela abrirá com um `Client` do estilo `TS`. Note que toda vez que você precisar rodar um novo `client`, terá que abrir um novo terminal se quiser manter o anterior rodando.
+Logo um janela abrirá com um `Client`. Note que toda vez que você precisar rodar um novo `client`, terá que abrir um novo terminal se quiser manter o anterior rodando.
 
 <p float="left">
   <img src="./client_start_state.png" width="50%" />
